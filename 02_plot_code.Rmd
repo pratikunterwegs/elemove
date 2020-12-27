@@ -1,0 +1,210 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+## Load libraries
+
+```{r}
+# load libraries
+library(sf)
+library(ggplot2)
+library(ggspatial)
+library(pals)
+library(rnaturalearth)
+```
+
+## Load data
+
+```{r}
+# get data
+data <- st_read("data/data_lines_elephants.gpkg")
+
+# get count data
+data_count <- fread("data/data_ele_count.csv")
+
+# get data 253
+data_253 <- data[data$id == "AM253", ]
+
+# get other data
+data_rest <- data[data$id != "AM253", ]
+
+# get kruger data
+kruger <- st_read("data/kruger_clip/kruger_clip.shp")
+kruger <- st_transform(kruger, 32736)
+```
+
+```{r}
+# get natural earth data
+land <- rnaturalearth::ne_download(type = "land", 
+                                   category = "physical",
+                                   scale = "small",
+                                   returnclass = "sf")
+```
+
+```{r crop_data}
+# za box
+za_box <- st_bbox(
+  st_multipoint(
+    matrix(c(-20, -39,
+             40, -10), 
+           nrow = 2,
+           byrow = T)))
+za_box <- st_as_sfc(za_box, crs = 4326)
+
+# crop
+za <- st_crop(land,
+              za_box)
+```
+
+
+## Make main plot
+
+```{r}
+# prepare bounding box
+bbox <- c(xmin = 352500,
+          xmax = 390750,
+          ymin = 7273000, 
+          ymax = 7295000)
+```
+
+
+```{r}
+# make plot
+fig_main <- ggplot()+
+  geom_sf(data = data_rest,
+          lwd = 0.1,
+          lty = 1,
+          alpha = 0.5,
+          col = scico::scico(7,
+                        palette = "bilbao")[4])+
+  geom_sf(data = data_253,
+          lwd = 0.2,
+          alpha = 1,
+          col = scico::scico(7,
+                        palette = "bilbao")[6])+
+  theme_void()+
+  theme(
+    panel.background = element_rect(
+      colour = "black",
+      fill = "grey90"
+    )
+  )+
+  coord_sf(
+    xlim = bbox[c("xmin", "xmax")],
+    ylim = bbox[c("ymin", "ymax")],
+    expand = FALSE
+  )
+```
+
+## Make where plot
+
+```{r}
+fig_inset_a <-
+  ggplot()+
+  geom_sf(
+    data = za,
+    fill = scico::scico(7,
+                        palette = "bilbao")[2],
+    col = NA
+  )+
+  annotate(
+    geom = "point",
+    x = 31.5,
+    y = -24,
+    size = 10,
+  )+
+  scale_y_continuous(
+    breaks = seq(-22, -34, -6)
+  )+
+  theme_void(base_size = 8)+
+  theme(
+    panel.background = element_rect(
+      fill = "aliceblue",
+      colour = "grey20"
+    ),
+    # axis.ticks = element_line(),
+    axis.ticks.length = unit(2, units = "mm"),
+    axis.text.y = element_text(margin = margin(r = -25)),
+    axis.text.x = element_text(margin = margin(t = -20)),
+    panel.grid = element_line(colour = "grey40", 
+                              size = 0.1),
+    text = element_text(
+      family = "IBM Plex Sans"
+    ), 
+    plot.margin = unit(rep(2, 4), "mm")
+  )+
+  coord_sf(
+    xlim = c(12, 37),
+    ylim = c(-36, -20),
+    expand = FALSE
+  )
+```
+
+
+## Make count plot
+
+```{r}
+fig_inset_b <-
+  ggplot()+
+  geom_sf(
+    data = kruger,
+    fill = "grey20",
+    alpha = 0.2,
+    col = NA,
+    lwd = 0.2
+  )+
+  geom_tile(data = data_count,
+            aes(xutm, yutm,
+                fill = N),
+            lwd = 0.1,
+            # col = "grey",
+            show.legend = FALSE)+
+  geom_sf(
+    data = kruger,
+    fill = NA,
+    alpha = 0.2,
+    col = "grey20",
+    lwd = 0.2
+  )+
+  scico::scale_fill_scico(
+    palette = "bilbao",
+    begin = c(0.1), 
+    direction = 1,
+    trans = "log10"
+  )+
+  annotation_north_arrow(
+    style = north_arrow_minimal(text_family = "TeX Gyre Schola")
+  )+
+  theme_void()+
+  coord_sf(crs = 32736,
+           expand = FALSE)+
+  theme(
+    panel.background = element_rect(
+      # colour = "grey20",
+      fill = "grey90"
+    ),
+    text = element_text(
+      family = "TeX Gyre Schola"
+    ), 
+    plot.margin = unit(rep(2, 4), "mm")
+  )
+```
+
+
+## Marge plots
+
+```{r}
+wrap_plots(fig_inset_a, fig_inset_b, fig_main, 
+           design = "ACC\nBCC")
+  plot_annotation(
+    theme(
+      plot.background = element_render(
+        fill = "grey90"
+      )
+    ) 
+  )
+```
+
+
