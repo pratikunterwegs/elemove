@@ -118,7 +118,7 @@ fig_main <-
   geom_tile(
     data = temp,
     aes(x, y, fill = V3),
-    show.legend = FALSE,
+    show.legend = T,
     # col = "grey",
     alpha = 0.4
   )+
@@ -144,13 +144,13 @@ fig_main <-
     alpha = 0.35
   )+
   geom_sf(data = data_rest,
-          lwd = c(0.15, 0.2),
+          lwd = c(0.1, 0.1),
           lty = 1,
           alpha = c(0.4, 0.8),
           col = scico::scico(7,
                         palette = "turku")[c(3, 4)])+
   geom_sf(data = data_253,
-          lwd = 0.2,
+          lwd = 0.15,
           alpha = 1,
           col = scico::scico(7,
                         palette = "bilbao")[6])+
@@ -165,30 +165,51 @@ fig_main <-
     # colours = scico(10, palette = "lapaz",
     #                 direction = 1,
     #                 begin = 0., end = 1)
-    colours = rev(RColorBrewer::brewer.pal(9, "RdYlBu"))
+    colours = rev(RColorBrewer::brewer.pal(9, "RdYlBu")),
+    guide = guide_colorbar(frame.colour = "grey40",
+                           ticks.colour = "grey40")
   )+
   annotation_north_arrow(
     style = north_arrow_minimal(text_family = "IBM Plex Sans", 
-                                text_size = 20, 
-                                text_col = "grey30", 
-                                line_col = "grey30", 
-                                fill = "grey30"),
+                                text_size = 10, 
+                                text_col = "grey50", 
+                                line_col = "grey50", 
+                                fill = "grey50"),
     location = "br"
   )+
   annotation_scale(
-    bar_cols = c("grey30", "grey90")
+    bar_cols = c("grey50", "grey90"),
+    height = unit(1, units = "mm"), 
+    text_family = "IBM Plex Sans"
   )+
   theme_void()+
   theme(
+    legend.position = c(0.1, 0.85),
+    legend.key.width = unit(1, units = "mm"),
+    legend.key.height = unit(3, units = "mm"),
+    legend.title = element_text(
+      family = "IBM Plex Sans",
+      colour = "grey30",
+      size = 8
+    ),
+    legend.text = element_text(
+      family = "IBM Plex Sans",
+      colour = "grey30",
+      size = 6
+    ),
     panel.background = element_rect(
       colour = "black",
       fill = "grey90"
-    )
+    ),
+    plot.margin = unit(rep(1, 4), "mm")
   )+
   coord_sf(
     xlim = bbox[c("xmin", "xmax")],
     ylim = bbox[c("ymin", "ymax")],
     expand = FALSE
+  )+
+  labs(
+    fill = "Temp. (°C)"
   )
 ```
 
@@ -263,6 +284,16 @@ fig_inset_b <-
     col = scico::scico(7,
                        palette = "bilbao")[c(6)]
   )+
+  annotate(
+    geom = "rect",
+    fill = NA,
+    col = "grey20",
+    lwd = 0.3,
+    xmin = bbox["xmin"], 
+    xmax = bbox["xmax"],
+    ymin = bbox["ymin"], 
+    ymax = bbox["ymax"]
+  )+
   scico::scale_fill_scico(
     palette = "bilbao",
     begin = c(0.2), 
@@ -272,14 +303,16 @@ fig_inset_b <-
   annotation_north_arrow(
     style = north_arrow_minimal(
       text_family = "IBM Plex Sans", 
-      text_size = 20, 
-      text_col = "grey30", 
-      line_col = "grey30", 
-      fill = "grey30"),
+      text_size = 10, 
+      text_col = "grey50", 
+      line_col = "grey50", 
+      fill = "grey50"),
     location = "br"
   )+
   annotation_scale(
-    bar_cols = c("grey30", "grey90")
+    bar_cols = c("grey50", "grey70"), 
+    height = unit(1, units = "mm"), 
+    text_family = "IBM Plex Sans"
   )+
   theme_void()+
   coord_sf(crs = 32736,
@@ -290,17 +323,13 @@ fig_inset_b <-
   theme(
     panel.background = element_rect(
       colour = "grey20",
-      size = 0.2,
-      fill = "cornsilk"
+      # size = 0.2,
+      fill = "cornsilk1"
     ),
-    plot.margin = unit(rep(2, 4), "mm")
+    plot.margin = unit(rep(1, 4), "mm")
   )
 ```
 
-bbox <- c(xmin = ,
-          xmax = 385050,
-          ymin = 7275000, 
-          ymax = 7303050)
 ## Marge plots
 
 ```{r}
@@ -309,15 +338,29 @@ library(patchwork)
 
 
 ```{r}
-wrap_plots(fig_inset_b, fig_main, 
-           design = "AB")
-  plot_annotation(
-    theme(
-      plot.background = element_render(
-        fill = "grey90"
-      )
-    ) 
+fig <-
+  wrap_plots(fig_inset_b, fig_main, 
+           design = "AB") +
+  plot_annotation(tag_levels = "a",
+                  tag_prefix = "(",
+                  tag_suffix = ")") &
+  theme(
+    plot.margin = unit(rep(0.1, 4), units = "mm"),
+    plot.tag.position = c(0.9, 0.95),
+    plot.tag = element_text(
+      size = 10,
+      colour = "grey40",
+      face = "bold",
+      family = "IBM Plex Sans"
+    )
   )
+
+ggsave(fig,
+       filename = "figures/fig_map.png",
+       # dpi = 300,
+       height = 100, 
+       width = 148,
+       units = "mm")
 ```
 
 
