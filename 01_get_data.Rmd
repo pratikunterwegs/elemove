@@ -11,6 +11,7 @@ editor_options:
 library(data.table)
 library(ggplot2)
 library(sf)
+library(rnaturalearth)
 ```
 
 ## Data pre-processing
@@ -86,3 +87,30 @@ st_write(data_sf,
          append = FALSE)
 ```
 
+## Get ZA
+
+```{r}
+# get natural earth data
+land <- rnaturalearth::ne_download(type = "land", 
+                                   category = "physical",
+                                   scale = "small",
+                                   returnclass = "sf")
+```
+
+```{r crop_data}
+# za box
+za_box <- st_bbox(
+  st_multipoint(
+    matrix(c(-20, -39,
+             40, -10), 
+           nrow = 2,
+           byrow = T)))
+za_box <- st_as_sfc(za_box, crs = 4326)
+
+# crop
+za <- st_crop(land,
+              za_box)
+
+# save
+st_write(za, "data/za_boundary.gpkg")
+```
