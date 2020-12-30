@@ -4,6 +4,8 @@ editor_options:
   chunk_output_type: console
 ---
 
+# Getting Data
+
 ## Load libraries
 
 ```{r}
