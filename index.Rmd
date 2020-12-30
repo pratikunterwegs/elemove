@@ -21,30 +21,4 @@ github-repo: pratikunterwegs/elemove
 
 # Introduction
 
-This is the readable version containing analysis that models associations between environmental predictors (climate and landcover) and citizen science observations of birds across the Nilgiri and Anamalai Hills of the Western Ghats Biodiversity Hotspot. 
-
-Methods and format are derived from [Strimas-Mackey et al.](https://cornelllabofornithology.github.io/ebird-best-practices/).
-
-## Attribution
-
-Please contact the following in case of interest in the project.
-
-- Vijay Ramesh (lead author)
-    - PhD student, Columbia University
-
-- Pratik Gupte (repo maintainer)
-    - PhD student, University of Groningen
-
-## Data access
-
-The data used in this work are available from [eBird](http://ebird.org/data/download).
-
-## Data processing
-
-The data processing for this project is described in the following sections. Navigate through them using the links in the sidebar.
-
-## Main Text Figure 1
-
-Figure prepared in QGIS 3.10.
-
-![A shaded relief of the study area - the Nilgiri and the Anamalai hills are shown in this figure. This map was made using the SRTM digital elevation model at a spatial resolution of 1km and data from Natural Earth were used to outline boundaries of water bodies.](figs/fig_01_elevation.png)
+# Data Sources
