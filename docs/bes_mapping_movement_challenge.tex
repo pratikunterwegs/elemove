@@ -1,0 +1,619 @@
+\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provides euro and other symbols
+\else % if luatex or xelatex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\usepackage{hyperref}
+\hypersetup{
+            pdftitle={Source code for Mapping Elephant Movements in Kruger},
+            pdfauthor={Pratik R. Gupte},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\AttributeTok}[1]{#1}
+\newcommand{\BaseNTok}[1]{#1}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.00,0.50,0.50}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\ConstantTok}[1]{#1}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.00,1.00}{#1}}
+\newcommand{\DataTypeTok}[1]{#1}
+\newcommand{\DecValTok}[1]{#1}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{#1}
+\newcommand{\FunctionTok}[1]{#1}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.00,1.00}{#1}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{#1}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{1.00,0.25,0.00}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{1.00,0.25,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.50,0.50}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.00,0.50,0.50}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.00,0.50,0.50}{#1}}
+\newcommand{\VariableTok}[1]{#1}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.00,0.50,0.50}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
+\usepackage{longtable,booktabs}
+% Fix footnotes in tables (requires footnote package)
+\IfFileExists{footnote.sty}{\usepackage{footnote}\makesavenoteenv{longtable}}{}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+
+% \usepackage{fontspec}
+% use nice fonts if available else use boring defaults
+
+\usepackage{lineno}
+% \KOMAoption{fontsize}{10pt}
+
+\title{Source code for \emph{Mapping Elephant Movements in Kruger}}
+\author{Pratik R. Gupte}
+\date{2020-12-30}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
+
+\hypertarget{data-sources}{%
+\section{Data Sources}\label{data-sources}}
+
+\hypertarget{load-libraries}{%
+\subsection{Load libraries}\label{load-libraries}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# load libs}
+\KeywordTok{library}\NormalTok{(data.table)}
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\KeywordTok{library}\NormalTok{(sf)}
+\KeywordTok{library}\NormalTok{(rnaturalearth)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{data-pre-processing}{%
+\subsection{Data pre-processing}\label{data-pre-processing}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# load data}
+\NormalTok{data <-}\StringTok{ }\KeywordTok{fread}\NormalTok{(}\StringTok{"data/elephant_data.csv"}\NormalTok{)}
+
+\CommentTok{# drop NAs}
+\NormalTok{data <-}\StringTok{ }\KeywordTok{na.omit}\NormalTok{(data, }\DataTypeTok{cols =} \KeywordTok{c}\NormalTok{(}\StringTok{"xutm"}\NormalTok{, }\StringTok{"yutm"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{loacations-in-each-5km}{%
+\subsection{Loacations in each 5km}\label{loacations-in-each-5km}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# round data}
+\NormalTok{data_count <-}\StringTok{ }\KeywordTok{copy}\NormalTok{(data)}
+\NormalTok{data_count[, }\KeywordTok{c}\NormalTok{(}\StringTok{"xutm"}\NormalTok{, }\StringTok{"yutm"}\NormalTok{) }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\KeywordTok{lapply}\NormalTok{(}\KeywordTok{list}\NormalTok{(xutm, yutm),}
+\NormalTok{  round,}
+  \DataTypeTok{digits =} \DecValTok{-3}
+\NormalTok{)]}
+
+\NormalTok{data_count <-}\StringTok{ }\NormalTok{data_count[, .N, by =}\StringTok{ }\KeywordTok{list}\NormalTok{(xutm, yutm)]}
+
+\CommentTok{# save}
+\KeywordTok{fwrite}\NormalTok{(data_count, }\DataTypeTok{file =} \StringTok{"data/data_ele_count.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# make sf and lines}
+\NormalTok{data <-}\StringTok{ }\KeywordTok{split}\NormalTok{(data, }\DataTypeTok{by =} \StringTok{"id"}\NormalTok{)}
+
+\CommentTok{# get histogram of speeds}
+\NormalTok{data <-}\StringTok{ }\KeywordTok{rbindlist}\NormalTok{(data)}
+
+\CommentTok{# split data again}
+\NormalTok{data <-}\StringTok{ }\KeywordTok{split}\NormalTok{(data, }\DataTypeTok{by =} \KeywordTok{c}\NormalTok{(}\StringTok{"id"}\NormalTok{))}
+
+\CommentTok{# make multilinestring}
+\NormalTok{geometry <-}\StringTok{ }\KeywordTok{st_sfc}\NormalTok{(}
+  \KeywordTok{lapply}\NormalTok{(data, }\ControlFlowTok{function}\NormalTok{(x) \{}
+    \KeywordTok{st_linestring}\NormalTok{(}
+      \KeywordTok{as.matrix}\NormalTok{(x[, }\KeywordTok{c}\NormalTok{(}\StringTok{"long"}\NormalTok{, }\StringTok{"lat"}\NormalTok{)])}
+\NormalTok{    )}
+\NormalTok{  \}),}
+  \DataTypeTok{crs =} \DecValTok{4326}
+\NormalTok{)}
+
+\CommentTok{# retransform}
+\NormalTok{geometry <-}\StringTok{ }\KeywordTok{st_transform}\NormalTok{(geometry, }\DecValTok{32736}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{make-sf}{%
+\subsection{\texorpdfstring{Make \texttt{sf}}{Make sf}}\label{make-sf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# get data}
+\NormalTok{data_sf <-}\StringTok{ }\KeywordTok{mapply}\NormalTok{(}
+  \ControlFlowTok{function}\NormalTok{(df) \{}
+\NormalTok{    df[}\DecValTok{1}\NormalTok{, }\KeywordTok{c}\NormalTok{(}\StringTok{"id"}\NormalTok{)]}
+\NormalTok{  \},}
+\NormalTok{  data,}
+  \DataTypeTok{SIMPLIFY =} \OtherTok{FALSE}
+\NormalTok{)}
+
+\CommentTok{# add geometry}
+\NormalTok{data_sf <-}\StringTok{ }\KeywordTok{rbindlist}\NormalTok{(data_sf)}
+\NormalTok{data_sf[, geometry }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\NormalTok{geometry]}
+
+\CommentTok{# make sf}
+\NormalTok{data_sf <-}\StringTok{ }\KeywordTok{st_sf}\NormalTok{(data_sf, }\DataTypeTok{crs =} \DecValTok{32736}\NormalTok{)}
+
+\CommentTok{# save}
+\KeywordTok{st_write}\NormalTok{(data_sf,}
+  \DataTypeTok{dsn =} \StringTok{"data/data_lines_elephants.gpkg"}\NormalTok{,}
+  \DataTypeTok{append =} \OtherTok{FALSE}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{get-za}{%
+\subsection{Get ZA}\label{get-za}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# get natural earth data}
+\NormalTok{land <-}\StringTok{ }\KeywordTok{ne_countries}\NormalTok{(}
+  \DataTypeTok{continent =} \StringTok{"africa"}\NormalTok{,}
+  \DataTypeTok{scale =} \StringTok{"small"}\NormalTok{,}
+  \DataTypeTok{returnclass =} \StringTok{"sf"}
+\NormalTok{)}
+
+\CommentTok{# save}
+\KeywordTok{st_write}\NormalTok{(land, }\StringTok{"data/za_boundary.gpkg"}\NormalTok{, }\DataTypeTok{append =}\NormalTok{ F)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{load-libraries-1}{%
+\subsection{Load libraries}\label{load-libraries-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# load libraries}
+\KeywordTok{library}\NormalTok{(sf)}
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\KeywordTok{library}\NormalTok{(ggspatial)}
+\KeywordTok{library}\NormalTok{(pals)}
+\KeywordTok{library}\NormalTok{(rnaturalearth)}
+\KeywordTok{library}\NormalTok{(data.table)}
+\KeywordTok{library}\NormalTok{(scico)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{load-data}{%
+\subsection{Load data}\label{load-data}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# prepare bounding box}
+\NormalTok{bbox <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}
+  \DataTypeTok{xmin =} \DecValTok{342000}\NormalTok{,}
+  \DataTypeTok{xmax =} \DecValTok{396000}\NormalTok{,}
+  \DataTypeTok{ymin =} \DecValTok{7260000}\NormalTok{,}
+  \DataTypeTok{ymax =} \DecValTok{7298050}
+\NormalTok{)}
+\NormalTok{bbox_sf <-}\StringTok{ }\KeywordTok{st_bbox}\NormalTok{(bbox)}
+\NormalTok{bbox_sf <-}\StringTok{ }\KeywordTok{st_as_sfc}\NormalTok{(bbox_sf)}
+\KeywordTok{st_crs}\NormalTok{(bbox_sf) <-}\StringTok{ }\DecValTok{32736}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# get data}
+\NormalTok{data <-}\StringTok{ }\KeywordTok{st_read}\NormalTok{(}\StringTok{"data/data_lines_elephants.gpkg"}\NormalTok{)}
+
+\CommentTok{# get data 253}
+\NormalTok{data_}\DecValTok{253}\NormalTok{ <-}\StringTok{ }\NormalTok{data[data}\OperatorTok{$}\NormalTok{id }\OperatorTok{==}\StringTok{ "AM253"}\NormalTok{, ]}
+
+\CommentTok{# get other data}
+\NormalTok{data_rest <-}\StringTok{ }\NormalTok{data[data}\OperatorTok{$}\NormalTok{id }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"AM255"}\NormalTok{, }\StringTok{"AM99"}\NormalTok{, }\StringTok{"AM239"}\NormalTok{), ]}
+
+\CommentTok{# get kruger data}
+\NormalTok{kruger <-}\StringTok{ }\KeywordTok{st_read}\NormalTok{(}\StringTok{"data/kruger_clip/kruger_clip.shp"}\NormalTok{)}
+\NormalTok{kruger <-}\StringTok{ }\KeywordTok{st_transform}\NormalTok{(kruger, }\DecValTok{32736}\NormalTok{)}
+
+\CommentTok{# get kruger point}
+\NormalTok{kruger_point <-}\StringTok{ }\KeywordTok{st_point}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\FloatTok{31.5}\NormalTok{, }\DecValTok{-24}\NormalTok{))}
+\NormalTok{kruger_point <-}\StringTok{ }\KeywordTok{st_sfc}\NormalTok{(kruger_point, }\DataTypeTok{crs =} \DecValTok{4326}\NormalTok{)}
+\NormalTok{kruger_point <-}\StringTok{ }\KeywordTok{st_transform}\NormalTok{(kruger_point, }\DecValTok{32736}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# get za}
+\NormalTok{za <-}\StringTok{ }\KeywordTok{st_read}\NormalTok{(}\StringTok{"data/za_boundary.gpkg"}\NormalTok{)}
+\NormalTok{za <-}\StringTok{ }\KeywordTok{st_transform}\NormalTok{(za, }\DecValTok{32736}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# get rivers}
+\NormalTok{rivers <-}\StringTok{ }\KeywordTok{st_read}\NormalTok{(}\StringTok{"data/river_crop/"}\NormalTok{)}
+
+\CommentTok{# river buffer}
+\NormalTok{rivers <-}\StringTok{ }\KeywordTok{st_transform}\NormalTok{(rivers[}\KeywordTok{is.na}\NormalTok{(rivers}\OperatorTok{$}\NormalTok{seasonal), ], }\DecValTok{32736}\NormalTok{)}
+\CommentTok{# river_buffer <- st_crop(river_buffer, bbox)}
+\CommentTok{# river_buffer <- st_buffer(river_buffer, 200)}
+\CommentTok{# river_buffer <- st_union(river_buffer)}
+
+\CommentTok{# waterholes}
+\NormalTok{waterholes <-}\StringTok{ }\KeywordTok{st_read}\NormalTok{(}\StringTok{"data/waterholes/"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# get slope}
+\KeywordTok{library}\NormalTok{(raster)}
+
+\NormalTok{res_init <-}\StringTok{ }\KeywordTok{res}\NormalTok{(}\KeywordTok{raster}\NormalTok{(}\StringTok{"data/kruger_temperature_UTM.tif"}\NormalTok{))}
+\NormalTok{res_final <-}\StringTok{ }\NormalTok{res_init }\OperatorTok{*}\StringTok{ }\DecValTok{200} \OperatorTok{/}\StringTok{ }\NormalTok{res_init}
+\NormalTok{gdalUtils}\OperatorTok{::}\KeywordTok{gdalwarp}\NormalTok{(}
+  \DataTypeTok{srcfile =} \StringTok{"data/kruger_temperature_UTM.tif"}\NormalTok{,}
+  \DataTypeTok{dstfile =} \StringTok{"data/kruger_temp_200m.tif"}\NormalTok{,}
+  \DataTypeTok{tr =} \KeywordTok{c}\NormalTok{(res_final), }\DataTypeTok{r =} \StringTok{"average"}\NormalTok{,}
+  \DataTypeTok{te =} \KeywordTok{c}\NormalTok{(}\KeywordTok{bbox}\NormalTok{(}\KeywordTok{raster}\NormalTok{(}\StringTok{"data/kruger_temperature_UTM.tif"}\NormalTok{)))}
+\NormalTok{)}
+
+\CommentTok{# read in cropped raster}
+\CommentTok{# elev <- raster("data/kruger_elevation_200m.tif")}
+\NormalTok{temp <-}\StringTok{ }\KeywordTok{raster}\NormalTok{(}\StringTok{"data/kruger_temp_200m.tif"}\NormalTok{)}
+
+\NormalTok{temp <-}\StringTok{ }\NormalTok{raster}\OperatorTok{::}\KeywordTok{crop}\NormalTok{(temp, }\KeywordTok{as}\NormalTok{(bbox_sf, }\StringTok{"Spatial"}\NormalTok{))}
+\NormalTok{temp <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(}\KeywordTok{coordinates}\NormalTok{(temp), }\KeywordTok{values}\NormalTok{(temp))}
+\NormalTok{temp <-}\StringTok{ }\KeywordTok{data.table}\NormalTok{(temp)}
+\NormalTok{temp <-}\StringTok{ }\NormalTok{temp[V3 }\OperatorTok{>}\StringTok{ }\DecValTok{22}\NormalTok{, ]}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{make-main-plot}{%
+\subsection{Make main plot}\label{make-main-plot}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{bbox <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}
+  \DataTypeTok{xmin =} \DecValTok{342000}\NormalTok{,}
+  \DataTypeTok{xmax =} \DecValTok{393000}\NormalTok{,}
+  \DataTypeTok{ymin =} \DecValTok{7260000}\NormalTok{,}
+  \DataTypeTok{ymax =} \DecValTok{7298050}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{textbox <-}\StringTok{ }\NormalTok{glue}\OperatorTok{::}\KeywordTok{glue}\NormalTok{(}
+  \StringTok{"**Kruger Elephants Shuttle to Water**}
+
+\StringTok{  African elephants move as they please, ignoring park boundaries }\CharTok{\textbackslash{}\textbackslash{}}
+\StringTok{  when it suits them. Yet they need water to help them through the thermal landscape. }\CharTok{\textbackslash{}\textbackslash{}}
+\StringTok{  Kruger elephants frequent water sources during the afternoon, the }\CharTok{\textbackslash{}\textbackslash{}}
+\StringTok{  hottest part of the day; arriving and leaving at high speed. }\CharTok{\textbackslash{}\textbackslash{}}
+\StringTok{  Here, elephant _AM253_ (red) and her herd keep to their own side of water sources, }\CharTok{\textbackslash{}\textbackslash{}}
+\StringTok{  while other herds keep to theirs."}
+\NormalTok{)}
+\CommentTok{# texttitle = "Elephants Shuttle to Water"}
+\NormalTok{textdata <-}\StringTok{ }\KeywordTok{data.table}\NormalTok{(}
+  \DataTypeTok{x =}\NormalTok{ bbox[}\StringTok{"xmin"}\NormalTok{] }\OperatorTok{+}\StringTok{ }\DecValTok{6000}\NormalTok{,}
+  \DataTypeTok{y =}\NormalTok{ bbox[}\StringTok{"ymax"}\NormalTok{] }\OperatorTok{-}\StringTok{ }\DecValTok{9000}\NormalTok{,}
+  \DataTypeTok{label =}\NormalTok{ textbox}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# make plot}
+\NormalTok{fig_main <-}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_sf}\NormalTok{(}
+    \DataTypeTok{data =}\NormalTok{ kruger,}
+    \DataTypeTok{col =} \OtherTok{NA}\NormalTok{,}
+    \DataTypeTok{fill =} \StringTok{"antiquewhite"}\NormalTok{,}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_tile}\NormalTok{(}
+    \DataTypeTok{data =}\NormalTok{ temp,}
+    \KeywordTok{aes}\NormalTok{(x, y, }\DataTypeTok{fill =}\NormalTok{ V3),}
+    \DataTypeTok{show.legend =}\NormalTok{ F,}
+    \CommentTok{# col = "grey",}
+    \DataTypeTok{alpha =} \FloatTok{0.45}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_sf}\NormalTok{(}
+    \DataTypeTok{data =}\NormalTok{ rivers[}\KeywordTok{is.na}\NormalTok{(rivers}\OperatorTok{$}\NormalTok{seasonal), ],}
+    \DataTypeTok{lwd =} \DecValTok{1}\NormalTok{,}
+    \DataTypeTok{col =}\NormalTok{ scico}\OperatorTok{::}\KeywordTok{scico}\NormalTok{(}\DecValTok{3}\NormalTok{,}
+      \DataTypeTok{palette =} \StringTok{"nuuk"}
+\NormalTok{    )[}\DecValTok{1}\NormalTok{],}
+    \DataTypeTok{alpha =} \FloatTok{0.35}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_sf}\NormalTok{(}
+    \DataTypeTok{data =}\NormalTok{ data_rest,}
+    \DataTypeTok{lwd =} \KeywordTok{c}\NormalTok{(}\FloatTok{0.1}\NormalTok{, }\FloatTok{0.1}\NormalTok{, }\FloatTok{0.1}\NormalTok{),}
+    \DataTypeTok{lty =} \DecValTok{1}\NormalTok{,}
+    \DataTypeTok{alpha =} \KeywordTok{c}\NormalTok{(}\FloatTok{0.2}\NormalTok{, }\FloatTok{0.8}\NormalTok{, }\FloatTok{0.15}\NormalTok{),}
+    \DataTypeTok{col =}\NormalTok{ scico}\OperatorTok{::}\KeywordTok{scico}\NormalTok{(}\DecValTok{7}\NormalTok{,}
+      \DataTypeTok{palette =} \StringTok{"turku"}
+\NormalTok{    )[}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{2}\NormalTok{)]}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_sf}\NormalTok{(}
+    \DataTypeTok{data =}\NormalTok{ data_}\DecValTok{253}\NormalTok{,}
+    \DataTypeTok{lwd =} \FloatTok{0.15}\NormalTok{,}
+    \DataTypeTok{alpha =} \DecValTok{1}\NormalTok{,}
+    \DataTypeTok{col =}\NormalTok{ scico}\OperatorTok{::}\KeywordTok{scico}\NormalTok{(}\DecValTok{7}\NormalTok{,}
+      \DataTypeTok{palette =} \StringTok{"bilbao"}
+\NormalTok{    )[}\DecValTok{6}\NormalTok{]}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_sf}\NormalTok{(}
+    \DataTypeTok{data =}\NormalTok{ waterholes,}
+    \DataTypeTok{col =}\NormalTok{ scico}\OperatorTok{::}\KeywordTok{scico}\NormalTok{(}\DecValTok{5}\NormalTok{,}
+      \DataTypeTok{palette =} \StringTok{"nuuk"}
+\NormalTok{    )[}\DecValTok{1}\NormalTok{],}
+    \DataTypeTok{alpha =} \FloatTok{0.45}
+    \CommentTok{# col = "grey"}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_sf}\NormalTok{(}
+    \DataTypeTok{data =}\NormalTok{ kruger,}
+    \DataTypeTok{col =} \StringTok{"grey50"}\NormalTok{,}
+    \DataTypeTok{lwd =} \FloatTok{0.2}\NormalTok{,}
+    \DataTypeTok{fill =} \OtherTok{NA}\NormalTok{,}
+    \DataTypeTok{lty =} \DecValTok{2}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_textbox}\NormalTok{(}
+    \DataTypeTok{data =}\NormalTok{ textdata,}
+    \KeywordTok{aes}\NormalTok{(}
+\NormalTok{      x, y,}
+      \DataTypeTok{label =}\NormalTok{ label}
+\NormalTok{    ),}
+    \DataTypeTok{family =} \StringTok{"IBM Plex Sans"}\NormalTok{,}
+    \DataTypeTok{size =} \DecValTok{4}\NormalTok{,}
+    \DataTypeTok{colour =} \StringTok{"grey30"}\NormalTok{,}
+    \DataTypeTok{fill =} \KeywordTok{alpha}\NormalTok{(}\StringTok{"antiquewhite"}\NormalTok{, }\FloatTok{0.3}\NormalTok{),}
+    \DataTypeTok{box.color =} \OtherTok{NA}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_fill_gradientn}\NormalTok{(}
+    \DataTypeTok{colours =} \KeywordTok{scico}\NormalTok{(}\DecValTok{10}\NormalTok{,}
+      \DataTypeTok{palette =} \StringTok{"vik"}\NormalTok{,}
+      \DataTypeTok{direction =} \DecValTok{1}\NormalTok{,}
+      \DataTypeTok{begin =} \FloatTok{0.}\NormalTok{, }\DataTypeTok{end =} \DecValTok{1}
+\NormalTok{    )}
+    \CommentTok{# colours = rev(RColorBrewer::brewer.pal(9, "RdYlBu"))#,}
+    \CommentTok{# guide = guide_colorbar(frame.colour = "grey40",}
+    \CommentTok{#                        ticks.colour = "grey40")}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{annotation_north_arrow}\NormalTok{(}
+    \DataTypeTok{style =} \KeywordTok{north_arrow_minimal}\NormalTok{(}
+      \DataTypeTok{text_family =} \StringTok{"IBM Plex Sans"}\NormalTok{,}
+      \DataTypeTok{text_size =} \DecValTok{10}\NormalTok{,}
+      \DataTypeTok{text_col =} \StringTok{"grey50"}\NormalTok{,}
+      \DataTypeTok{line_col =} \StringTok{"grey50"}\NormalTok{,}
+      \DataTypeTok{fill =} \StringTok{"grey50"}
+\NormalTok{    ),}
+    \DataTypeTok{location =} \StringTok{"br"}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{annotation_scale}\NormalTok{(}
+    \DataTypeTok{bar_cols =} \KeywordTok{c}\NormalTok{(}\StringTok{"grey50"}\NormalTok{, }\StringTok{"grey90"}\NormalTok{),}
+    \DataTypeTok{height =} \KeywordTok{unit}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DataTypeTok{units =} \StringTok{"mm"}\NormalTok{),}
+    \DataTypeTok{text_family =} \StringTok{"IBM Plex Sans"}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme_void}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}
+    \DataTypeTok{panel.background =} \KeywordTok{element_rect}\NormalTok{(}
+      \DataTypeTok{colour =} \StringTok{"grey"}\NormalTok{,}
+      \DataTypeTok{fill =} \StringTok{"grey90"}
+\NormalTok{    ),}
+    \DataTypeTok{plot.margin =} \KeywordTok{unit}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\DecValTok{5}\NormalTok{, }\DecValTok{4}\NormalTok{), }\StringTok{"mm"}\NormalTok{)}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_sf}\NormalTok{(}
+    \DataTypeTok{xlim =}\NormalTok{ bbox[}\KeywordTok{c}\NormalTok{(}\StringTok{"xmin"}\NormalTok{, }\StringTok{"xmax"}\NormalTok{)],}
+    \DataTypeTok{ylim =}\NormalTok{ bbox[}\KeywordTok{c}\NormalTok{(}\StringTok{"ymin"}\NormalTok{, }\StringTok{"ymax"}\NormalTok{)],}
+    \DataTypeTok{expand =} \OtherTok{FALSE}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{annotation_custom}\NormalTok{(}
+    \DataTypeTok{grob =} \KeywordTok{ggplotGrob}\NormalTok{(}
+\NormalTok{      fig_inset_b}
+\NormalTok{    ),}
+    \DataTypeTok{xmin =}\NormalTok{ bbox[}\KeywordTok{c}\NormalTok{(}\StringTok{"xmin"}\NormalTok{)] }\OperatorTok{+}\StringTok{ }\DecValTok{1000}\NormalTok{,}
+    \DataTypeTok{xmax =}\NormalTok{ bbox[}\KeywordTok{c}\NormalTok{(}\StringTok{"xmin"}\NormalTok{)] }\OperatorTok{+}\StringTok{ }\DecValTok{7500}\NormalTok{,}
+    \DataTypeTok{ymax =}\NormalTok{ bbox[}\StringTok{"ymin"}\NormalTok{] }\OperatorTok{+}\StringTok{ }\DecValTok{13500}\NormalTok{,}
+    \DataTypeTok{ymin =}\NormalTok{ bbox[}\StringTok{"ymin"}\NormalTok{] }\OperatorTok{+}\StringTok{ }\DecValTok{1000}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{annotation_custom}\NormalTok{(}
+    \DataTypeTok{grob =} \KeywordTok{ggplotGrob}\NormalTok{(}
+\NormalTok{      fig_inset_a}
+\NormalTok{    ),}
+    \DataTypeTok{xmin =}\NormalTok{ bbox[}\KeywordTok{c}\NormalTok{(}\StringTok{"xmin"}\NormalTok{)] }\OperatorTok{+}\StringTok{ }\DecValTok{1000}\NormalTok{,}
+    \DataTypeTok{xmax =}\NormalTok{ bbox[}\KeywordTok{c}\NormalTok{(}\StringTok{"xmin"}\NormalTok{)] }\OperatorTok{+}\StringTok{ }\DecValTok{7500}\NormalTok{,}
+    \DataTypeTok{ymax =}\NormalTok{ bbox[}\StringTok{"ymin"}\NormalTok{] }\OperatorTok{+}\StringTok{ }\DecValTok{21000}\NormalTok{,}
+    \DataTypeTok{ymin =}\NormalTok{ bbox[}\StringTok{"ymin"}\NormalTok{] }\OperatorTok{+}\StringTok{ }\DecValTok{13600}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggsave}\NormalTok{(fig_main,}
+  \DataTypeTok{filename =} \StringTok{"figures/fig_map4.png"}\NormalTok{,}
+  \DataTypeTok{height =} \DecValTok{9}\NormalTok{, }\DataTypeTok{width =} \DecValTok{12}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{make-where-plot}{%
+\subsection{Make where plot}\label{make-where-plot}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fig_inset_a <-}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_sf}\NormalTok{(}
+    \DataTypeTok{data =}\NormalTok{ za,}
+    \DataTypeTok{fill =} \StringTok{"tan"}\NormalTok{,}
+    \CommentTok{# alpha = 0.5,}
+    \DataTypeTok{show.legend =}\NormalTok{ F,}
+    \DataTypeTok{col =} \OtherTok{NA}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_sf}\NormalTok{(}
+    \DataTypeTok{data =}\NormalTok{ kruger_point,}
+    \DataTypeTok{size =} \DecValTok{5}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_y_continuous}\NormalTok{(}
+    \DataTypeTok{breaks =} \KeywordTok{seq}\NormalTok{(}\OperatorTok{-}\DecValTok{22}\NormalTok{, }\DecValTok{-34}\NormalTok{, }\DecValTok{-6}\NormalTok{)}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme_void}\NormalTok{(}\DataTypeTok{base_size =} \DecValTok{8}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}
+    \DataTypeTok{panel.background =} \KeywordTok{element_rect}\NormalTok{(}
+      \DataTypeTok{fill =} \StringTok{"aliceblue"}\NormalTok{,}
+      \DataTypeTok{colour =} \StringTok{"grey20"}
+\NormalTok{    ),}
+    \DataTypeTok{plot.margin =} \KeywordTok{unit}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{4}\NormalTok{), }\StringTok{"mm"}\NormalTok{)}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_sf}\NormalTok{(}
+    \DataTypeTok{expand =}\NormalTok{ T}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{make-count-plot}{%
+\subsection{Make count plot}\label{make-count-plot}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pal <-}\StringTok{ }\KeywordTok{scico}\NormalTok{(}\DecValTok{7}\NormalTok{, }\DataTypeTok{palette =} \StringTok{"turku"}\NormalTok{)}
+
+\NormalTok{fig_inset_b <-}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_sf}\NormalTok{(}
+    \DataTypeTok{data =}\NormalTok{ kruger,}
+    \DataTypeTok{fill =} \StringTok{"aliceblue"}\NormalTok{,}
+    \DataTypeTok{alpha =} \FloatTok{0.8}\NormalTok{,}
+    \DataTypeTok{col =} \OtherTok{NA}\NormalTok{,}
+    \DataTypeTok{lwd =} \FloatTok{0.2}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_sf}\NormalTok{(}
+    \DataTypeTok{data =}\NormalTok{ data,}
+    \DataTypeTok{lwd =} \KeywordTok{c}\NormalTok{(}\FloatTok{0.1}\NormalTok{),}
+    \DataTypeTok{lty =} \DecValTok{1}\NormalTok{,}
+    \DataTypeTok{alpha =} \KeywordTok{c}\NormalTok{(}\FloatTok{0.4}\NormalTok{),}
+    \DataTypeTok{col =}\NormalTok{ pal[}\DecValTok{3}\NormalTok{]}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{annotate}\NormalTok{(}
+    \DataTypeTok{geom =} \StringTok{"rect"}\NormalTok{,}
+    \DataTypeTok{fill =} \OtherTok{NA}\NormalTok{,}
+    \DataTypeTok{col =} \StringTok{"grey20"}\NormalTok{,}
+    \DataTypeTok{lwd =} \FloatTok{0.3}\NormalTok{,}
+    \DataTypeTok{xmin =}\NormalTok{ bbox[}\StringTok{"xmin"}\NormalTok{],}
+    \DataTypeTok{xmax =}\NormalTok{ bbox[}\StringTok{"xmax"}\NormalTok{],}
+    \DataTypeTok{ymin =}\NormalTok{ bbox[}\StringTok{"ymin"}\NormalTok{],}
+    \DataTypeTok{ymax =}\NormalTok{ bbox[}\StringTok{"ymax"}\NormalTok{]}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{annotation_scale}\NormalTok{(}
+    \DataTypeTok{bar_cols =} \KeywordTok{c}\NormalTok{(}\StringTok{"grey50"}\NormalTok{, }\StringTok{"grey70"}\NormalTok{),}
+    \DataTypeTok{height =} \KeywordTok{unit}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DataTypeTok{units =} \StringTok{"mm"}\NormalTok{),}
+    \DataTypeTok{text_family =} \StringTok{"IBM Plex Sans"}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme_void}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_sf}\NormalTok{(}
+    \DataTypeTok{crs =} \DecValTok{32736}\NormalTok{,}
+    \DataTypeTok{expand =} \OtherTok{FALSE}\NormalTok{,}
+    \DataTypeTok{xlim =} \KeywordTok{c}\NormalTok{(}\DecValTok{325000}\NormalTok{, }\OtherTok{NA}\NormalTok{) }\CommentTok{# ,}
+    \CommentTok{# ylim = c(7213050, 7335050)}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}
+    \DataTypeTok{panel.background =} \KeywordTok{element_rect}\NormalTok{(}
+      \DataTypeTok{fill =} \StringTok{"tan"}
+\NormalTok{    ),}
+    \DataTypeTok{panel.border =} \KeywordTok{element_rect}\NormalTok{(}
+      \DataTypeTok{colour =} \StringTok{"grey20"}\NormalTok{,}
+      \DataTypeTok{fill =} \OtherTok{NA}
+      \CommentTok{# size = 0.2,}
+\NormalTok{    ),}
+    \DataTypeTok{plot.margin =} \KeywordTok{unit}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{4}\NormalTok{), }\StringTok{"mm"}\NormalTok{)}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\end{document}
