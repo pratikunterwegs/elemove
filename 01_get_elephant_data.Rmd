@@ -1,0 +1,102 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Getting Elephant Data
+
+## Load libraries
+
+```{r}
+# load libs
+library(move)
+library(data.table)
+library(sf)
+```
+
+## Get data using `move`
+
+```{r}
+# check if local data exists and then get if not
+if (!file.exists("data/elephant_data.csv")) {
+  data <- getDataRepositoryData("doi:10.5441/001/1.403h24q5")
+  
+  # save as rdata
+  save(data, file = "data/elephant_data.Rdata")
+}
+
+# extract data from the move object
+# which is the most labyrinthine object class ever
+```
+
+## Extract useful data
+
+```{r}
+# get coordinates, id, and time from the movestack
+# first split it because we know how lists work
+# it behaves like a list
+data_coords <- split(data)
+
+# get data
+data_coords <- Map(function(le, tag_id) {
+  dt <- data.table(
+    cbind(
+      coordinates(le),
+      timestamps(le)
+    ),
+    tag_id
+  )
+  setnames(dt, c("x", "y", "time", "id"))
+}, data_coords, names(data_coords))
+```
+
+```{r}
+# remove data and clear garbage
+rm(data)
+gc()
+```
+
+
+## Make `sf` objects
+
+```{r}
+# make multilinestring
+geometry <- st_sfc(
+  lapply(data_coords, function(x) {
+    st_linestring(
+      as.matrix(x[, c("x", "y")])
+    )
+  }),
+  crs = 4326
+)
+
+# retransform
+geometry <- st_transform(geometry, 32736)
+```
+
+## Make `sf`
+
+```{r}
+# get data
+data_sf <- mapply(
+  function(df) {
+    df[1, c("id")]
+  },
+  data_coords,
+  SIMPLIFY = FALSE
+)
+
+# add geometry
+data_sf <- rbindlist(data_sf)
+data_sf[, geometry := geometry]
+
+# make sf
+data_sf <- st_sf(data_sf, crs = 32736)
+
+# save
+st_write(data_sf,
+  dsn = "data/data_lines_elephants.gpkg",
+  append = FALSE
+)
+```
