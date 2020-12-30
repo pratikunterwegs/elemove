@@ -23,4 +23,5 @@ Imports:
     ggtext,
     data.table,
     rnaturalearth,
-    move
+    move,
+    glue
