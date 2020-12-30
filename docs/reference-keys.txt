@@ -22,4 +22,5 @@ prepare-movement-plot
 add-text-box
 add-decoration
 add-insets
+add-some-labels
 save-figure

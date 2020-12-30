@@ -83,7 +83,7 @@ waterholes <- st_read("data/waterholes/")
 #' 
 ## -----------------------------------------------------------------------------
 # get temperature
-if (!file.exists("data/kruger_temperature_200m.tfi")) {
+if (!file.exists("data/kruger_temperature_200m.tif")) {
   res_init <- res(raster("data/kruger_temperature_UTM.tif"))
   res_final <- res_init * 200 / res_init
   gdalUtils::gdalwarp(
@@ -103,6 +103,12 @@ temp <- data.table(temp)
 temp <- temp[V3 > 22, ]
 setnames(temp, "V3", "temp")
 
+#' 
+## -----------------------------------------------------------------------------
+# prepare a blue
+blue <- scico::scico(3, palette = "nuuk")[1]
+
+#' 
 #' 
 #' ## Make Africa Inset
 #' 
@@ -125,7 +131,7 @@ fig_inset_a <-
   theme_void(base_size = 8) +
   theme(
     panel.background = element_rect(
-      fill = "aliceblue",
+      fill = "powderblue",
       colour = "grey20"
     ),
     plot.margin = unit(rep(2, 4), "mm")
@@ -215,9 +221,6 @@ textdata <- data.table(
   y = bbox["ymax"] - 9000,
   label = textbox
 )
-
-# prepare a blue
-blue <- scico::scico(3, palette = "nuuk")[1]
 
 #' 
 #' ### Prepare movement plot
@@ -354,6 +357,50 @@ fig_main <- fig_main +
     ymin = bbox["ymin"] + 13600
   )
 
+#' 
+## -----------------------------------------------------------------------------
+textlabels <- data.table(
+  x = bbox["xmax"] - c(8000, 18000),
+  xend = bbox["xmax"] - c(5000, 6000),
+  y = bbox["ymin"] + c(23500, 15000),
+  yend = bbox["ymin"] + c(12000, 9000),
+  label = c("warmer\nhere", "cooler\nhere")
+)
+
+#' 
+#' ### Add some labels
+#' 
+## -----------------------------------------------------------------------------
+fig_main <-
+  fig_main +
+  annotate(
+    geom = "text",
+    x = bbox[c("xmin")] +
+      c(10000, 20000),
+    y = bbox["ymin"] +
+      c(12600, 14400),
+    label = c(
+      "Private\nNature\nReserves",
+      "Kruger\nNational\nPark"
+    ),
+    fontface = "italic",
+    family = "IBM Plex Serif",
+    alpha = c(0.4, 0.4),
+    size = c(4, 5)
+  ) +
+  geom_text(
+    data = textlabels,
+    aes(x, y,
+      label = label
+    ),
+    fontface = "italic",
+    family = "IBM Plex Serif",
+    alpha = c(0.5, 0.5),
+    col = "grey20",
+    size = c(5, 5)
+  )
+
+#' 
 #' 
 #' ### Save figure
 #' 
