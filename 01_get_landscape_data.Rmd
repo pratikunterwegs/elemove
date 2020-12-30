@@ -1,0 +1,32 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Getting Background Data
+
+## Load libraries
+
+```{r}
+# load libs
+library(data.table)
+library(sf)
+library(rnaturalearth)
+```
+
+## Get Africa landmass from _Natural Earth_
+
+```{r}
+# only if local data does not exist
+if (!file.exists("data/africa.gpkg")) {
+  # get natural earth data
+  land <- ne_countries(
+    continent = "africa",
+    scale = "small",
+    returnclass = "sf"
+  )
+  # save
+  st_write(land, "data/africa.gpkg", append = F) 
+}
+```
