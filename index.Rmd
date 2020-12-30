@@ -20,5 +20,3 @@ github-repo: pratikunterwegs/elemove
 ---
 
 # Introduction
-
-# Data Sources
