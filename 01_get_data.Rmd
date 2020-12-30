@@ -30,7 +30,9 @@ data <- na.omit(data, cols = c("xutm", "yutm"))
 # round data
 data_count <- copy(data)
 data_count[, c("xutm", "yutm") := lapply(list(xutm, yutm),
-                                         round, digits = -3)]
+  round,
+  digits = -3
+)]
 
 data_count <- data_count[, .N, by = list(xutm, yutm)]
 
@@ -71,7 +73,8 @@ data_sf <- mapply(
   function(df) {
     df[1, c("id")]
   },
-  data, SIMPLIFY = FALSE
+  data,
+  SIMPLIFY = FALSE
 )
 
 # add geometry
@@ -82,18 +85,21 @@ data_sf[, geometry := geometry]
 data_sf <- st_sf(data_sf, crs = 32736)
 
 # save
-st_write(data_sf, 
-         dsn = "data/data_lines_elephants.gpkg", 
-         append = FALSE)
+st_write(data_sf,
+  dsn = "data/data_lines_elephants.gpkg",
+  append = FALSE
+)
 ```
 
 ## Get ZA
 
 ```{r}
 # get natural earth data
-land <- ne_countries(continent = 'africa', 
+land <- ne_countries(
+  continent = "africa",
   scale = "small",
-  returnclass = "sf")
+  returnclass = "sf"
+)
 
 # save
 st_write(land, "data/za_boundary.gpkg", append = F)
