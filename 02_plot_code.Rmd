@@ -8,12 +8,13 @@ editor_options:
 
 ```{r}
 # load libraries
+# for data
 library(sf)
-library(ggplot2)
-library(ggspatial)
-library(pals)
 library(rnaturalearth)
 library(data.table)
+# for plotting
+library(ggplot2)
+library(ggspatial)
 library(scico)
 ```
 
@@ -23,7 +24,7 @@ library(scico)
 # prepare bounding box
 bbox <- c(
   xmin = 342000,
-  xmax = 396000,
+  xmax = 393000,
   ymin = 7260000,
   ymax = 7298050
 )
@@ -64,9 +65,9 @@ rivers <- st_read("data/river_crop/")
 
 # river buffer
 rivers <- st_transform(rivers[is.na(rivers$seasonal), ], 32736)
-# river_buffer <- st_crop(river_buffer, bbox)
-# river_buffer <- st_buffer(river_buffer, 200)
-# river_buffer <- st_union(river_buffer)
+# river_buffer = st_crop(river_buffer, bbox)
+# river_buffer = st_buffer(river_buffer, 200)
+# river_buffer = st_union(river_buffer)
 
 # waterholes
 waterholes <- st_read("data/waterholes/")
@@ -76,17 +77,19 @@ waterholes <- st_read("data/waterholes/")
 # get slope
 library(raster)
 
-res_init <- res(raster("data/kruger_temperature_UTM.tif"))
-res_final <- res_init * 200 / res_init
-gdalUtils::gdalwarp(
-  srcfile = "data/kruger_temperature_UTM.tif",
-  dstfile = "data/kruger_temp_200m.tif",
-  tr = c(res_final), r = "average",
-  te = c(bbox(raster("data/kruger_temperature_UTM.tif")))
-)
+if (!file.exists("data/kruger_temperature_200m.tfi")) {
+  res_init <- res(raster("data/kruger_temperature_UTM.tif"))
+  res_final <- res_init * 200 / res_init
+  gdalUtils::gdalwarp(
+    srcfile = "data/kruger_temperature_UTM.tif",
+    dstfile = "data/kruger_temp_200m.tif",
+    tr = c(res_final), r = "average",
+    te = c(bbox(raster("data/kruger_temperature_UTM.tif")))
+  )
+}
 
 # read in cropped raster
-# elev <- raster("data/kruger_elevation_200m.tif")
+# elev = raster("data/kruger_elevation_200m.tif")
 temp <- raster("data/kruger_temp_200m.tif")
 
 temp <- raster::crop(temp, as(bbox_sf, "Spatial"))
@@ -95,170 +98,7 @@ temp <- data.table(temp)
 temp <- temp[V3 > 22, ]
 ```
 
-## Make main plot
-
-```{r}
-bbox <- c(
-  xmin = 342000,
-  xmax = 393000,
-  ymin = 7260000,
-  ymax = 7298050
-)
-```
-
-```{r}
-textbox <- glue::glue(
-  "**Kruger Elephants Shuttle to Water**
-
-  African elephants move as they please, ignoring park boundaries \\
-  when it suits them. Yet they need water to help them through the thermal landscape. \\
-  Kruger elephants frequent water sources during the afternoon, the \\
-  hottest part of the day; arriving and leaving at high speed. \\
-  Here, elephant _AM253_ (red) and her herd keep to their own side of water sources, \\
-  while other herds keep to theirs."
-)
-# texttitle = "Elephants Shuttle to Water"
-textdata <- data.table(
-  x = bbox["xmin"] + 6000,
-  y = bbox["ymax"] - 9000,
-  label = textbox
-)
-```
-
-```{r}
-# make plot
-fig_main <-
-  ggplot() +
-  geom_sf(
-    data = kruger,
-    col = NA,
-    fill = "antiquewhite",
-  ) +
-  geom_tile(
-    data = temp,
-    aes(x, y, fill = V3),
-    show.legend = F,
-    # col = "grey",
-    alpha = 0.45
-  ) +
-  geom_sf(
-    data = rivers[is.na(rivers$seasonal), ],
-    lwd = 1,
-    col = scico::scico(3,
-      palette = "nuuk"
-    )[1],
-    alpha = 0.35
-  ) +
-  geom_sf(
-    data = data_rest,
-    lwd = c(0.1, 0.1, 0.1),
-    lty = 1,
-    alpha = c(0.2, 0.8, 0.15),
-    col = scico::scico(7,
-      palette = "turku"
-    )[c(2, 3, 2)]
-  ) +
-  geom_sf(
-    data = data_253,
-    lwd = 0.15,
-    alpha = 1,
-    col = scico::scico(7,
-      palette = "bilbao"
-    )[6]
-  ) +
-  geom_sf(
-    data = waterholes,
-    col = scico::scico(5,
-      palette = "nuuk"
-    )[1],
-    alpha = 0.45
-    # col = "grey"
-  ) +
-  geom_sf(
-    data = kruger,
-    col = "grey50",
-    lwd = 0.2,
-    fill = NA,
-    lty = 2
-  ) +
-  geom_textbox(
-    data = textdata,
-    aes(
-      x, y,
-      label = label
-    ),
-    family = "IBM Plex Sans",
-    size = 4,
-    colour = "grey30",
-    fill = alpha("antiquewhite", 0.3),
-    box.color = NA
-  ) +
-  scale_fill_gradientn(
-    colours = scico(10,
-      palette = "vik",
-      direction = 1,
-      begin = 0., end = 1
-    )
-    # colours = rev(RColorBrewer::brewer.pal(9, "RdYlBu"))#,
-    # guide = guide_colorbar(frame.colour = "grey40",
-    #                        ticks.colour = "grey40")
-  ) +
-  annotation_north_arrow(
-    style = north_arrow_minimal(
-      text_family = "IBM Plex Sans",
-      text_size = 10,
-      text_col = "grey50",
-      line_col = "grey50",
-      fill = "grey50"
-    ),
-    location = "br"
-  ) +
-  annotation_scale(
-    bar_cols = c("grey50", "grey90"),
-    height = unit(1, units = "mm"),
-    text_family = "IBM Plex Sans"
-  ) +
-  theme_void() +
-  theme(
-    panel.background = element_rect(
-      colour = "grey",
-      fill = "grey90"
-    ),
-    plot.margin = unit(rep(5, 4), "mm")
-  ) +
-  coord_sf(
-    xlim = bbox[c("xmin", "xmax")],
-    ylim = bbox[c("ymin", "ymax")],
-    expand = FALSE
-  ) +
-  annotation_custom(
-    grob = ggplotGrob(
-      fig_inset_b
-    ),
-    xmin = bbox[c("xmin")] + 1000,
-    xmax = bbox[c("xmin")] + 7500,
-    ymax = bbox["ymin"] + 13500,
-    ymin = bbox["ymin"] + 1000
-  ) +
-  annotation_custom(
-    grob = ggplotGrob(
-      fig_inset_a
-    ),
-    xmin = bbox[c("xmin")] + 1000,
-    xmax = bbox[c("xmin")] + 7500,
-    ymax = bbox["ymin"] + 21000,
-    ymin = bbox["ymin"] + 13600
-  )
-```
-
-```{r}
-ggsave(fig_main,
-  filename = "figures/fig_map4.png",
-  height = 9, width = 12
-)
-```
-
-## Make where plot
+## Make Africa Inset
 
 ```{r}
 fig_inset_a <-
@@ -266,7 +106,6 @@ fig_inset_a <-
   geom_sf(
     data = za,
     fill = "tan",
-    # alpha = 0.5,
     show.legend = F,
     col = NA
   ) +
@@ -291,7 +130,7 @@ fig_inset_a <-
 ```
 
 
-## Make count plot
+## Make Kruger Inset
 
 ```{r}
 pal <- scico(7, palette = "turku")
@@ -331,8 +170,7 @@ fig_inset_b <-
   coord_sf(
     crs = 32736,
     expand = FALSE,
-    xlim = c(325000, NA) # ,
-    # ylim = c(7213050, 7335050)
+    xlim = c(325000, NA)
   ) +
   theme(
     panel.background = element_rect(
@@ -341,8 +179,180 @@ fig_inset_b <-
     panel.border = element_rect(
       colour = "grey20",
       fill = NA
-      # size = 0.2,
     ),
     plot.margin = unit(rep(1, 4), "mm")
   )
+```
+
+## Make Main Figure
+
+### Prepare textbox
+
+```{r}
+textbox <- glue::glue(
+  "**Kruger Elephants Shuttle to Water**
+
+  African elephants move as they please, ignoring park boundaries \\
+  when it suits them. Yet they need water to help them through the thermal landscape. \\
+  Kruger elephants frequent water sources during the afternoon, the \\
+  hottest part of the day; arriving and leaving at high speed. \\
+  Here, elephant _AM253_ (red) and her herd keep to their own side of water sources, \\
+  while other herds keep to theirs."
+)
+# texttitle = "Elephants Shuttle to Water"
+textdata <- data.table(
+  x = bbox["xmin"] + 6000,
+  y = bbox["ymax"] - 9000,
+  label = textbox
+)
+```
+
+### Prepare movement plot
+
+```{r}
+# make plot
+fig_main <-
+  ggplot() +
+  geom_sf(
+    data = kruger,
+    col = NA,
+    fill = "antiquewhite",
+  ) +
+  geom_tile(
+    data = temp,
+    aes(x, y, fill = V3),
+    show.legend = F,
+    alpha = 0.45
+  ) +
+  geom_sf(
+    data = rivers[is.na(rivers$seasonal), ],
+    lwd = 1,
+    col = scico::scico(3,
+      palette = "nuuk"
+    )[1],
+    alpha = 0.35
+  ) +
+  geom_sf(
+    data = data_rest,
+    lwd = c(0.1, 0.1, 0.1),
+    lty = 1,
+    alpha = c(0.2, 0.8, 0.15),
+    col = scico::scico(7,
+      palette = "turku"
+    )[c(2, 3, 2)]
+  ) +
+  geom_sf(
+    data = data_253,
+    lwd = 0.15,
+    alpha = 1,
+    col = scico::scico(7,
+      palette = "bilbao"
+    )[6]
+  ) +
+  geom_sf(
+    data = waterholes,
+    col = scico::scico(5,
+      palette = "nuuk"
+    )[1],
+    alpha = 0.45
+  ) +
+  geom_sf(
+    data = kruger,
+    col = "grey50",
+    lwd = 0.2,
+    fill = NA,
+    lty = 2
+  ) +
+  scale_fill_gradientn(
+    colours = scico(10,
+      palette = "vik",
+      direction = 1,
+      begin = 0., end = 1
+    )
+  )
+```
+
+### Add text box
+
+```{r}
+fig_main <- fig_main +
+  geom_textbox(
+    data = textdata,
+    aes(
+      x, y,
+      label = label
+    ),
+    family = "IBM Plex Sans",
+    size = 4,
+    colour = "grey30",
+    fill = alpha("antiquewhite", 0.3),
+    box.color = NA
+  )
+```
+
+### Add decoration
+
+```{r}
+fig_main <- fig_main +
+  annotation_north_arrow(
+    style = north_arrow_minimal(
+      text_family = "IBM Plex Sans",
+      text_size = 10,
+      text_col = "grey50",
+      line_col = "grey50",
+      fill = "grey50"
+    ),
+    location = "br"
+  ) +
+  annotation_scale(
+    bar_cols = c("grey50", "grey90"),
+    height = unit(1, units = "mm"),
+    text_family = "IBM Plex Sans"
+  ) +
+  theme_void() +
+  theme(
+    panel.background = element_rect(
+      colour = "grey",
+      fill = "grey90"
+    ),
+    plot.margin = unit(rep(5, 4), "mm")
+  ) +
+  coord_sf(
+    xlim = bbox[c("xmin", "xmax")],
+    ylim = bbox[c("ymin", "ymax")],
+    expand = FALSE
+  )
+```
+
+### Add insets
+
+```{r}
+fig_main <- fig_main +
+  annotation_custom(
+    grob = ggplotGrob(
+      fig_inset_b
+    ),
+    xmin = bbox[c("xmin")] + 1000,
+    xmax = bbox[c("xmin")] + 7500,
+    ymax = bbox["ymin"] + 13500,
+    ymin = bbox["ymin"] + 1000
+  ) +
+  annotation_custom(
+    grob = ggplotGrob(
+      fig_inset_a
+    ),
+    xmin = bbox[c("xmin")] + 1000,
+    xmax = bbox[c("xmin")] + 7500,
+    ymax = bbox["ymin"] + 21000,
+    ymin = bbox["ymin"] + 13600
+  )
+```
+
+### Save figure
+
+```{r}
+ggsave(fig_main,
+  filename = "figures/fig_map4.png",
+  height = 9, width = 12
+)
 ```
