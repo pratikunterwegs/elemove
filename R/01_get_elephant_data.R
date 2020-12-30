@@ -15,11 +15,11 @@ library(data.table)
 library(sf)
 
 #' 
-#' ## Get data using `move`
+#' ## Get elephant data from _Movebank_
 #' 
 ## -----------------------------------------------------------------------------
 # check if local data exists and then get if not
-if (!file.exists("data/elephant_data.csv")) {
+if (!file.exists("data/data_lines_elephants.gpkg")) {
   data <- getDataRepositoryData("doi:10.5441/001/1.403h24q5")
 
   # save as rdata
@@ -30,7 +30,7 @@ if (!file.exists("data/elephant_data.csv")) {
 # which is the most labyrinthine object class ever
 
 #' 
-#' ## Extract useful data
+#' ## Extract useful data from `move` object
 #' 
 ## -----------------------------------------------------------------------------
 # get coordinates, id, and time from the movestack
@@ -57,11 +57,10 @@ rm(data)
 gc()
 
 #' 
-#' 
-#' ## Make `sf` objects
+#' ## Make elephant points into paths
 #' 
 ## -----------------------------------------------------------------------------
-# make multilinestring
+# make multilinestring of elephant paths
 geometry <- st_sfc(
   lapply(data_coords, function(x) {
     st_linestring(
@@ -75,7 +74,7 @@ geometry <- st_sfc(
 geometry <- st_transform(geometry, 32736)
 
 #' 
-#' ## Make `sf`
+#' ## Make `sf` data frame
 #' 
 ## -----------------------------------------------------------------------------
 # get data

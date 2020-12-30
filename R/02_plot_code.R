@@ -12,15 +12,20 @@
 # load libraries
 # for data
 library(sf)
+library(raster)
 library(rnaturalearth)
 library(data.table)
+library(glue)
 # for plotting
 library(ggplot2)
 library(ggspatial)
+library(ggtext)
 library(scico)
 
 #' 
 #' ## Load data
+#' 
+#' ### Prepare extent
 #' 
 ## -----------------------------------------------------------------------------
 # prepare bounding box
@@ -35,6 +40,8 @@ bbox_sf <- st_as_sfc(bbox_sf)
 st_crs(bbox_sf) <- 32736
 
 #' 
+#' ### Load movement data
+#' 
 ## -----------------------------------------------------------------------------
 # get data
 data <- st_read("data/data_lines_elephants.gpkg")
@@ -45,40 +52,37 @@ data_253 <- data[data$id == "AM253", ]
 # get other data
 data_rest <- data[data$id %in% c("AM255", "AM99", "AM239"), ]
 
+#' 
+#' ### Load boundary data
+#' 
+## -----------------------------------------------------------------------------
 # get kruger data
-kruger <- st_read("data/kruger_clip/kruger_clip.shp")
+kruger <- st_read("data/kruger_clip/")
 kruger <- st_transform(kruger, 32736)
 
-# get kruger point
+# get kruger point -- this is hardcoded but could also be a centroid
 kruger_point <- st_point(c(31.5, -24))
 kruger_point <- st_sfc(kruger_point, crs = 4326)
 kruger_point <- st_transform(kruger_point, 32736)
 
 #' 
 ## -----------------------------------------------------------------------------
-# get za
-za <- st_read("data/za_boundary.gpkg")
-za <- st_transform(za, 32736)
+# get africa for inset
+africa <- st_read("data/africa.gpkg")
+africa <- st_transform(africa, 32736)
 
 #' 
 ## -----------------------------------------------------------------------------
 # get rivers
 rivers <- st_read("data/river_crop/")
-
-# river buffer
 rivers <- st_transform(rivers[is.na(rivers$seasonal), ], 32736)
-# river_buffer = st_crop(river_buffer, bbox)
-# river_buffer = st_buffer(river_buffer, 200)
-# river_buffer = st_union(river_buffer)
 
 # waterholes
 waterholes <- st_read("data/waterholes/")
 
 #' 
 ## -----------------------------------------------------------------------------
-# get slope
-library(raster)
-
+# get temperature
 if (!file.exists("data/kruger_temperature_200m.tfi")) {
   res_init <- res(raster("data/kruger_temperature_UTM.tif"))
   res_final <- res_init * 200 / res_init
@@ -91,13 +95,13 @@ if (!file.exists("data/kruger_temperature_200m.tfi")) {
 }
 
 # read in cropped raster
-# elev = raster("data/kruger_elevation_200m.tif")
 temp <- raster("data/kruger_temp_200m.tif")
 
 temp <- raster::crop(temp, as(bbox_sf, "Spatial"))
 temp <- cbind(coordinates(temp), values(temp))
 temp <- data.table(temp)
 temp <- temp[V3 > 22, ]
+setnames(temp, "V3", "temp")
 
 #' 
 #' ## Make Africa Inset
@@ -106,7 +110,7 @@ temp <- temp[V3 > 22, ]
 fig_inset_a <-
   ggplot() +
   geom_sf(
-    data = za,
+    data = africa,
     fill = "tan",
     show.legend = F,
     col = NA
@@ -191,15 +195,19 @@ fig_inset_b <-
 #' ### Prepare textbox
 #' 
 ## -----------------------------------------------------------------------------
-textbox <- glue::glue(
+textbox <- glue(
   "**Kruger Elephants Shuttle to Water**
 
-  African elephants move as they please, ignoring park boundaries \\
-  when it suits them. Yet they need water to help them through the thermal landscape. \\
-  Kruger elephants frequent water sources during the afternoon, the \\
+  African elephants move as they please, yet they need water to help them \\
+  through the thermal landscape (_blue: cool, orange: warm_; LANDSAT 5 \\
+  2007 -- 2009 average). \\
+  In Kruger, elephants frequent water sources during the afternoon, the \\
   hottest part of the day; arriving and leaving at high speed. \\
-  Here, elephant _AM253_ (red) and her herd keep to their own side of water sources, \\
-  while other herds keep to theirs."
+  Here, elephant _AM253_ (red) and her herd trace loops to and from water, \\
+  keeping to 'their' side of water sources, \\
+  while other herds (grey) keep to theirs. \\
+  Elephants apparently avoid the cooler conditions of _Acacia_ woodland, seen \\
+  here as the central blue patch."
 )
 # texttitle = "Elephants Shuttle to Water"
 textdata <- data.table(
@@ -207,6 +215,9 @@ textdata <- data.table(
   y = bbox["ymax"] - 9000,
   label = textbox
 )
+
+# prepare a blue
+blue <- scico::scico(3, palette = "nuuk")[1]
 
 #' 
 #' ### Prepare movement plot
@@ -222,26 +233,22 @@ fig_main <-
   ) +
   geom_tile(
     data = temp,
-    aes(x, y, fill = V3),
+    aes(x, y, fill = temp),
     show.legend = F,
     alpha = 0.45
   ) +
   geom_sf(
     data = rivers[is.na(rivers$seasonal), ],
     lwd = 1,
-    col = scico::scico(3,
-      palette = "nuuk"
-    )[1],
+    col = blue,
     alpha = 0.35
   ) +
   geom_sf(
     data = data_rest,
-    lwd = c(0.1, 0.1, 0.1),
+    lwd = c(0.15, 0.15, 0.15),
     lty = 1,
     alpha = c(0.2, 0.8, 0.15),
-    col = scico::scico(7,
-      palette = "turku"
-    )[c(2, 3, 2)]
+    col = pal[c(2, 3, 2)]
   ) +
   geom_sf(
     data = data_253,
@@ -253,9 +260,7 @@ fig_main <-
   ) +
   geom_sf(
     data = waterholes,
-    col = scico::scico(5,
-      palette = "nuuk"
-    )[1],
+    col = blue,
     alpha = 0.45
   ) +
   geom_sf(
@@ -285,8 +290,8 @@ fig_main <- fig_main +
       label = label
     ),
     family = "IBM Plex Sans",
-    size = 4,
-    colour = "grey30",
+    size = 3,
+    colour = "grey20",
     fill = alpha("antiquewhite", 0.3),
     box.color = NA
   )
@@ -354,7 +359,7 @@ fig_main <- fig_main +
 #' 
 ## -----------------------------------------------------------------------------
 ggsave(fig_main,
-  filename = "figures/fig_map4.png",
+  filename = "figures/fig_map.png",
   height = 9, width = 12
 )
 
