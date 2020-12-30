@@ -12,7 +12,7 @@ The tracking dataset collected for use in this work is available from Movebank: 
 
 Slotow R, Thaker M, Vanak AT (2019) Data from: Fine-scale tracking of ambient temperature and movement reveals shuttling behavior of elephants to water. Movebank Data Repository. doi:10.5441/001/1.403h24q5
 
-## Citation
+## Published work
 
 This dataset was used in Thaker M, Gupte PR, Prins HHT, et al (2019) Fine-Scale Tracking of Ambient Temperature and Movement Reveals Shuttling Behavior of Elephants to Water. Front Ecol Evol 7:. doi: 10.3389/fevo.2019.00004
 
