@@ -91,7 +91,8 @@ st_write(data_sf,
 
 ```{r}
 # get natural earth data
-land <- ne_countries(continent = 'africa', scale = "small",
+land <- ne_countries(continent = 'africa', 
+  scale = "small",
   returnclass = "sf")
 
 # save
