@@ -83,7 +83,7 @@ waterholes <- st_read("data/waterholes/")
 
 ```{r}
 # get temperature
-if (!file.exists("data/kruger_temperature_200m.tif")) {
+if (!file.exists("data/kruger_temp_200m.tif")) {
   res_init <- res(raster("data/kruger_temperature_UTM.tif"))
   res_final <- res_init * 200 / res_init
   gdalUtils::gdalwarp(
@@ -401,12 +401,31 @@ fig_main <-
   )
 ```
 
+```{r}
+fig_main +
+  theme(
+    plot.background =
+      element_rect(
+        fill = "grey80",
+        colour = NA
+      )
+  )
+```
+
 
 ### Save figure
 
 ```{r}
+# wide 16:9
 ggsave(fig_main,
-  filename = "figures/fig_map.png",
-  height = 9, width = 12
+  filename = "figures/fig_map_wide.png",
+  height = 9, width = 16,
+  bg = "grey"
+)
+# regular 4:3
+ggsave(fig_main,
+  filename = "figures/fig_map_reg.png",
+  height = 9, width = 12,
+  bg = "grey"
 )
 ```
