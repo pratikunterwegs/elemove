@@ -5,6 +5,7 @@ data-pre-processing
 loacations-in-each-5km
 make-sf
 get-za
+mapping-elephant-movement
 load-libraries-1
 load-data
 make-africa-inset

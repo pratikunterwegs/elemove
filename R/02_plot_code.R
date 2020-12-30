@@ -4,6 +4,8 @@
 #'   chunk_output_type: console
 #' ---
 #' 
+#' # Mapping Elephant Movement
+#' 
 #' ## Load libraries
 #' 
 ## -----------------------------------------------------------------------------
