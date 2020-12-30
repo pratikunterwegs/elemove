@@ -21,7 +21,7 @@ library(sf)
 # check if local data exists and then get if not
 if (!file.exists("data/elephant_data.csv")) {
   data <- getDataRepositoryData("doi:10.5441/001/1.403h24q5")
-  
+
   # save as rdata
   save(data, file = "data/elephant_data.Rdata")
 }

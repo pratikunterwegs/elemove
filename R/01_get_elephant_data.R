@@ -4,60 +4,68 @@
 #'   chunk_output_type: console
 #' ---
 #' 
-#' # Getting Data
+#' # Getting Elephant Data
 #' 
 #' ## Load libraries
 #' 
 ## -----------------------------------------------------------------------------
 # load libs
+library(move)
 library(data.table)
-library(ggplot2)
 library(sf)
-library(rnaturalearth)
 
 #' 
-#' ## Data pre-processing
-#' 
-## -----------------------------------------------------------------------------
-# load data
-data <- fread("data/elephant_data.csv")
-
-# drop NAs
-data <- na.omit(data, cols = c("xutm", "yutm"))
-
-#' 
-#' ## Loacations in each 5km
+#' ## Get data using `move`
 #' 
 ## -----------------------------------------------------------------------------
-# round data
-data_count <- copy(data)
-data_count[, c("xutm", "yutm") := lapply(list(xutm, yutm),
-  round,
-  digits = -3
-)]
+# check if local data exists and then get if not
+if (!file.exists("data/elephant_data.csv")) {
+  data <- getDataRepositoryData("doi:10.5441/001/1.403h24q5")
 
-data_count <- data_count[, .N, by = list(xutm, yutm)]
+  # save as rdata
+  save(data, file = "data/elephant_data.Rdata")
+}
 
-# save
-fwrite(data_count, file = "data/data_ele_count.csv")
+# extract data from the move object
+# which is the most labyrinthine object class ever
 
 #' 
+#' ## Extract useful data
 #' 
 ## -----------------------------------------------------------------------------
-# make sf and lines
-data <- split(data, by = "id")
+# get coordinates, id, and time from the movestack
+# first split it because we know how lists work
+# it behaves like a list
+data_coords <- split(data)
 
-# get histogram of speeds
-data <- rbindlist(data)
+# get data
+data_coords <- Map(function(le, tag_id) {
+  dt <- data.table(
+    cbind(
+      coordinates(le),
+      timestamps(le)
+    ),
+    tag_id
+  )
+  setnames(dt, c("x", "y", "time", "id"))
+}, data_coords, names(data_coords))
 
-# split data again
-data <- split(data, by = c("id"))
+#' 
+## -----------------------------------------------------------------------------
+# remove data and clear garbage
+rm(data)
+gc()
 
+#' 
+#' 
+#' ## Make `sf` objects
+#' 
+## -----------------------------------------------------------------------------
 # make multilinestring
 geometry <- st_sfc(
-  lapply(data, function(x) {
+  lapply(data_coords, function(x) {
     st_linestring(
-      as.matrix(x[, c("long", "lat")])
+      as.matrix(x[, c("x", "y")])
     )
   }),
   crs = 4326
@@ -75,7 +83,7 @@ data_sf <- mapply(
   function(df) {
     df[1, c("id")]
   },
-  data,
+  data_coords,
   SIMPLIFY = FALSE
 )
 
@@ -91,18 +99,4 @@ st_write(data_sf,
   dsn = "data/data_lines_elephants.gpkg",
   append = FALSE
 )
-
-#' 
-#' ## Get ZA
-#' 
-## -----------------------------------------------------------------------------
-# get natural earth data
-land <- ne_countries(
-  continent = "africa",
-  scale = "small",
-  returnclass = "sf"
-)
-
-# save
-st_write(land, "data/za_boundary.gpkg", append = F)
 

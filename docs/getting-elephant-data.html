@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Section 3 Getting Data | Source code for Mapping Elephant Movements in Kruger</title>
-  <meta name="description" content="Section 3 Getting Data | Source code for Mapping Elephant Movements in Kruger" />
+  <title>Section 2 Getting Elephant Data | Source code for Mapping Elephant Movements in Kruger</title>
+  <meta name="description" content="Section 2 Getting Elephant Data | Source code for Mapping Elephant Movements in Kruger" />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Section 3 Getting Data | Source code for Mapping Elephant Movements in Kruger" />
+  <meta property="og:title" content="Section 2 Getting Elephant Data | Source code for Mapping Elephant Movements in Kruger" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="pratikunterwegs/elemove" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Section 3 Getting Data | Source code for Mapping Elephant Movements in Kruger" />
+  <meta name="twitter:title" content="Section 2 Getting Elephant Data | Source code for Mapping Elephant Movements in Kruger" />
   
   
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="getting-elephant-data.html"/>
-<link rel="next" href="mapping-elephant-movement.html"/>
+<link rel="prev" href="index.html"/>
+<link rel="next" href="getting-data.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -171,27 +171,88 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="getting-data" class="section level1">
-<h1><span class="header-section-number">Section 3</span> Getting Data</h1>
-<div id="load-libraries-1" class="section level2">
-<h2><span class="header-section-number">3.1</span> Load libraries</h2>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="co"># load libs</span></a>
-<a class="sourceLine" id="cb7-2" title="2"><span class="kw">library</span>(data.table)</a>
-<a class="sourceLine" id="cb7-3" title="3"><span class="kw">library</span>(ggplot2)</a>
-<a class="sourceLine" id="cb7-4" title="4"><span class="kw">library</span>(sf)</a>
-<a class="sourceLine" id="cb7-5" title="5"><span class="kw">library</span>(rnaturalearth)</a></code></pre></div>
+<div id="getting-elephant-data" class="section level1">
+<h1><span class="header-section-number">Section 2</span> Getting Elephant Data</h1>
+<div id="load-libraries" class="section level2">
+<h2><span class="header-section-number">2.1</span> Load libraries</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># load libs</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(move)</a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">library</span>(data.table)</a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="kw">library</span>(sf)</a></code></pre></div>
 </div>
-<div id="get-za" class="section level2">
-<h2><span class="header-section-number">3.2</span> Get ZA</h2>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="co"># get natural earth data</span></a>
-<a class="sourceLine" id="cb8-2" title="2">land &lt;-<span class="st"> </span><span class="kw">ne_countries</span>(</a>
-<a class="sourceLine" id="cb8-3" title="3">  <span class="dt">continent =</span> <span class="st">&quot;africa&quot;</span>,</a>
-<a class="sourceLine" id="cb8-4" title="4">  <span class="dt">scale =</span> <span class="st">&quot;small&quot;</span>,</a>
-<a class="sourceLine" id="cb8-5" title="5">  <span class="dt">returnclass =</span> <span class="st">&quot;sf&quot;</span></a>
-<a class="sourceLine" id="cb8-6" title="6">)</a>
-<a class="sourceLine" id="cb8-7" title="7"></a>
-<a class="sourceLine" id="cb8-8" title="8"><span class="co"># save</span></a>
-<a class="sourceLine" id="cb8-9" title="9"><span class="kw">st_write</span>(land, <span class="st">&quot;data/za_boundary.gpkg&quot;</span>, <span class="dt">append =</span> F)</a></code></pre></div>
+<div id="get-data-using-move" class="section level2">
+<h2><span class="header-section-number">2.2</span> Get data using <code>move</code></h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># check if local data exists and then get if not</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="cf">if</span> (<span class="op">!</span><span class="kw">file.exists</span>(<span class="st">&quot;data/elephant_data.csv&quot;</span>)) {</a>
+<a class="sourceLine" id="cb2-3" title="3">  data &lt;-<span class="st"> </span><span class="kw">getDataRepositoryData</span>(<span class="st">&quot;doi:10.5441/001/1.403h24q5&quot;</span>)</a>
+<a class="sourceLine" id="cb2-4" title="4"></a>
+<a class="sourceLine" id="cb2-5" title="5">  <span class="co"># save as rdata</span></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="kw">save</span>(data, <span class="dt">file =</span> <span class="st">&quot;data/elephant_data.Rdata&quot;</span>)</a>
+<a class="sourceLine" id="cb2-7" title="7">}</a>
+<a class="sourceLine" id="cb2-8" title="8"></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="co"># extract data from the move object</span></a>
+<a class="sourceLine" id="cb2-10" title="10"><span class="co"># which is the most labyrinthine object class ever</span></a></code></pre></div>
+</div>
+<div id="extract-useful-data" class="section level2">
+<h2><span class="header-section-number">2.3</span> Extract useful data</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># get coordinates, id, and time from the movestack</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="co"># first split it because we know how lists work</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="co"># it behaves like a list</span></a>
+<a class="sourceLine" id="cb3-4" title="4">data_coords &lt;-<span class="st"> </span><span class="kw">split</span>(data)</a>
+<a class="sourceLine" id="cb3-5" title="5"></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="co"># get data</span></a>
+<a class="sourceLine" id="cb3-7" title="7">data_coords &lt;-<span class="st"> </span><span class="kw">Map</span>(<span class="cf">function</span>(le, tag_id) {</a>
+<a class="sourceLine" id="cb3-8" title="8">  dt &lt;-<span class="st"> </span><span class="kw">data.table</span>(</a>
+<a class="sourceLine" id="cb3-9" title="9">    <span class="kw">cbind</span>(</a>
+<a class="sourceLine" id="cb3-10" title="10">      <span class="kw">coordinates</span>(le),</a>
+<a class="sourceLine" id="cb3-11" title="11">      <span class="kw">timestamps</span>(le)</a>
+<a class="sourceLine" id="cb3-12" title="12">    ),</a>
+<a class="sourceLine" id="cb3-13" title="13">    tag_id</a>
+<a class="sourceLine" id="cb3-14" title="14">  )</a>
+<a class="sourceLine" id="cb3-15" title="15">  <span class="kw">setnames</span>(dt, <span class="kw">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>, <span class="st">&quot;time&quot;</span>, <span class="st">&quot;id&quot;</span>))</a>
+<a class="sourceLine" id="cb3-16" title="16">}, data_coords, <span class="kw">names</span>(data_coords))</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># remove data and clear garbage</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw">rm</span>(data)</a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="kw">gc</span>()</a></code></pre></div>
+</div>
+<div id="make-sf-objects" class="section level2">
+<h2><span class="header-section-number">2.4</span> Make <code>sf</code> objects</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co"># make multilinestring</span></a>
+<a class="sourceLine" id="cb5-2" title="2">geometry &lt;-<span class="st"> </span><span class="kw">st_sfc</span>(</a>
+<a class="sourceLine" id="cb5-3" title="3">  <span class="kw">lapply</span>(data_coords, <span class="cf">function</span>(x) {</a>
+<a class="sourceLine" id="cb5-4" title="4">    <span class="kw">st_linestring</span>(</a>
+<a class="sourceLine" id="cb5-5" title="5">      <span class="kw">as.matrix</span>(x[, <span class="kw">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>)])</a>
+<a class="sourceLine" id="cb5-6" title="6">    )</a>
+<a class="sourceLine" id="cb5-7" title="7">  }),</a>
+<a class="sourceLine" id="cb5-8" title="8">  <span class="dt">crs =</span> <span class="dv">4326</span></a>
+<a class="sourceLine" id="cb5-9" title="9">)</a>
+<a class="sourceLine" id="cb5-10" title="10"></a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="co"># retransform</span></a>
+<a class="sourceLine" id="cb5-12" title="12">geometry &lt;-<span class="st"> </span><span class="kw">st_transform</span>(geometry, <span class="dv">32736</span>)</a></code></pre></div>
+</div>
+<div id="make-sf" class="section level2">
+<h2><span class="header-section-number">2.5</span> Make <code>sf</code></h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="co"># get data</span></a>
+<a class="sourceLine" id="cb6-2" title="2">data_sf &lt;-<span class="st"> </span><span class="kw">mapply</span>(</a>
+<a class="sourceLine" id="cb6-3" title="3">  <span class="cf">function</span>(df) {</a>
+<a class="sourceLine" id="cb6-4" title="4">    df[<span class="dv">1</span>, <span class="kw">c</span>(<span class="st">&quot;id&quot;</span>)]</a>
+<a class="sourceLine" id="cb6-5" title="5">  },</a>
+<a class="sourceLine" id="cb6-6" title="6">  data_coords,</a>
+<a class="sourceLine" id="cb6-7" title="7">  <span class="dt">SIMPLIFY =</span> <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="cb6-8" title="8">)</a>
+<a class="sourceLine" id="cb6-9" title="9"></a>
+<a class="sourceLine" id="cb6-10" title="10"><span class="co"># add geometry</span></a>
+<a class="sourceLine" id="cb6-11" title="11">data_sf &lt;-<span class="st"> </span><span class="kw">rbindlist</span>(data_sf)</a>
+<a class="sourceLine" id="cb6-12" title="12">data_sf[, geometry <span class="op">:</span><span class="er">=</span><span class="st"> </span>geometry]</a>
+<a class="sourceLine" id="cb6-13" title="13"></a>
+<a class="sourceLine" id="cb6-14" title="14"><span class="co"># make sf</span></a>
+<a class="sourceLine" id="cb6-15" title="15">data_sf &lt;-<span class="st"> </span><span class="kw">st_sf</span>(data_sf, <span class="dt">crs =</span> <span class="dv">32736</span>)</a>
+<a class="sourceLine" id="cb6-16" title="16"></a>
+<a class="sourceLine" id="cb6-17" title="17"><span class="co"># save</span></a>
+<a class="sourceLine" id="cb6-18" title="18"><span class="kw">st_write</span>(data_sf,</a>
+<a class="sourceLine" id="cb6-19" title="19">  <span class="dt">dsn =</span> <span class="st">&quot;data/data_lines_elephants.gpkg&quot;</span>,</a>
+<a class="sourceLine" id="cb6-20" title="20">  <span class="dt">append =</span> <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="cb6-21" title="21">)</a></code></pre></div>
 
 </div>
 </div>
@@ -200,8 +261,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="getting-elephant-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="mapping-elephant-movement.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="getting-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
