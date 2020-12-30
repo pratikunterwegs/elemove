@@ -21,9 +21,9 @@ library(scico)
 
 ```{r}
 # prepare bounding box
-bbox <- c(xmin = 357000,
-          xmax = 385050,
-          ymin = 7275000, 
+bbox <- c(xmin = 337000,
+          xmax = 391000,
+          ymin = 7265000, 
           ymax = 7303050)
 bbox_sf <- st_bbox(bbox)
 bbox_sf <- st_as_sfc(bbox_sf)
@@ -41,16 +41,22 @@ data_count <- fread("data/data_ele_count.csv")
 data_253 <- data[data$id == "AM253", ]
 
 # get other data
-data_rest <- data[data$id %in% c("AM255", "AM99"), ]
+data_rest <- data[data$id %in% c("AM255", "AM99", "AM239"), ]
 
 # get kruger data
 kruger <- st_read("data/kruger_clip/kruger_clip.shp")
 kruger <- st_transform(kruger, 32736)
+
+# get kruger point
+kruger_point <- st_point(c(31.5, -24))
+kruger_point = st_sfc(kruger_point, crs = 4326)
+kruger_point = st_transform(kruger_point, 32736)
 ```
 
 ```{r}
 # get za
 za <- st_read("data/za_boundary.gpkg")
+za <- st_transform(za, 32736)
 ```
 
 ```{r}
@@ -58,10 +64,10 @@ za <- st_read("data/za_boundary.gpkg")
 rivers <- st_read("data/river_crop/")
 
 # river buffer
-river_buffer <- st_transform(rivers[is.na(rivers$seasonal), ], 32736)
-river_buffer <- st_crop(river_buffer, bbox)
-river_buffer <- st_buffer(river_buffer, 200)
-river_buffer <- st_union(river_buffer)
+rivers <- st_transform(rivers[is.na(rivers$seasonal), ], 32736)
+# river_buffer <- st_crop(river_buffer, bbox)
+# river_buffer <- st_buffer(river_buffer, 200)
+# river_buffer <- st_union(river_buffer)
 
 # waterholes
 waterholes <- st_read("data/waterholes/")
@@ -98,18 +104,21 @@ gdalUtils::gdalwarp(
 # elev <- raster("data/kruger_elevation_200m.tif")
 temp <- raster("data/kruger_temp_200m.tif")
 
-# crop
-elev <- raster::crop(elev, as(bbox_sf, "Spatial"))
-elev <- cbind(coordinates(elev), values(elev))
-elev <- data.table(elev)
-
 temp <- raster::crop(temp, as(bbox_sf, "Spatial"))
 temp <- cbind(coordinates(temp), values(temp))
 temp <- data.table(temp)
-temp <- temp[V3 > 15, ]
+temp <- temp[V3 > 22, ]
 ```
 
 ## Make main plot
+
+```{r}
+bbox <- c(xmin = 337000,
+          xmax = 391000,
+          ymin = 7265000, 
+          ymax = 7303050)
+```
+
 
 ```{r}
 # make plot
@@ -118,23 +127,9 @@ fig_main <-
   geom_tile(
     data = temp,
     aes(x, y, fill = V3),
-    show.legend = T,
+    show.legend = F,
     # col = "grey",
     alpha = 0.4
-  )+
-  geom_sf(
-    data = waterholes,
-    col = scico::scico(5,
-                       palette = "nuuk")[1],
-    alpha = 0.35
-    # col = "grey"
-  )+
-  geom_sf(
-    data = river_buffer,
-    col = NA,
-    fill = scico::scico(5,
-                       palette = "nuuk")[3],
-    alpha = 0.2
   )+
   geom_sf(
     data = rivers[is.na(rivers$seasonal), ],
@@ -144,11 +139,11 @@ fig_main <-
     alpha = 0.35
   )+
   geom_sf(data = data_rest,
-          lwd = c(0.1, 0.1),
+          lwd = c(0.1, 0.1, 0.1),
           lty = 1,
-          alpha = c(0.4, 0.8),
+          alpha = c(0.4, 0.8, 0.1),
           col = scico::scico(7,
-                        palette = "turku")[c(3, 4)])+
+                        palette = "turku")[c(3, 4, 3)])+
   geom_sf(data = data_253,
           lwd = 0.15,
           alpha = 1,
@@ -161,13 +156,27 @@ fig_main <-
     alpha = 0.35
     # col = "grey"
   )+
+  geom_sf(
+    data = kruger,
+    col = "grey50",
+    lwd = 0.2,
+    fill = NA,
+    lty = 2
+  )+
+  annotate(
+    geom = "text",
+    x = bbox["xmin"] + 1000,
+    y = bbox["ymax"] - 1000,
+    label = c("some description here"),
+    hjust = "inward"
+  )+
   scale_fill_gradientn(
     # colours = scico(10, palette = "lapaz",
     #                 direction = 1,
     #                 begin = 0., end = 1)
-    colours = rev(RColorBrewer::brewer.pal(9, "RdYlBu")),
-    guide = guide_colorbar(frame.colour = "grey40",
-                           ticks.colour = "grey40")
+    colours = rev(RColorBrewer::brewer.pal(9, "RdYlBu"))#,
+    # guide = guide_colorbar(frame.colour = "grey40",
+    #                        ticks.colour = "grey40")
   )+
   annotation_north_arrow(
     style = north_arrow_minimal(text_family = "IBM Plex Sans", 
@@ -184,33 +193,56 @@ fig_main <-
   )+
   theme_void()+
   theme(
-    legend.position = c(0.1, 0.85),
-    legend.key.width = unit(1, units = "mm"),
-    legend.key.height = unit(3, units = "mm"),
-    legend.title = element_text(
-      family = "IBM Plex Sans",
-      colour = "grey30",
-      size = 8
-    ),
-    legend.text = element_text(
-      family = "IBM Plex Sans",
-      colour = "grey30",
-      size = 6
-    ),
+    # legend.position = c(0.8, 0.85),
+    # legend.key.width = unit(1, units = "mm"),
+    # legend.key.height = unit(3, units = "mm"),
+    # legend.title = element_text(
+    #   family = "IBM Plex Sans",
+    #   colour = "grey30",
+    #   size = 8
+    # ),
+    # legend.text = element_text(
+    #   family = "IBM Plex Sans",
+    #   colour = "grey30",
+    #   size = 6
+    # ),
     panel.background = element_rect(
-      colour = "black",
-      fill = "grey90"
+      colour = "grey",
+      fill = "grey99"
     ),
-    plot.margin = unit(rep(1, 4), "mm")
+    plot.margin = unit(rep(5, 4), "mm")
   )+
   coord_sf(
     xlim = bbox[c("xmin", "xmax")],
     ylim = bbox[c("ymin", "ymax")],
     expand = FALSE
+  )+#+
+  # labs(
+  #   fill = "Temp. (°C)"
+  # )+
+  annotation_custom(
+    grob = ggplotGrob(
+      fig_inset_b
+    ),
+    xmin = bbox[c("xmin")] + 1000,
+    xmax = bbox[c("xmin")] + 7500,
+    ymax = bbox["ymin"] + 13500,
+    ymin = bbox["ymin"] + 1000
   )+
-  labs(
-    fill = "Temp. (°C)"
+  annotation_custom(
+    grob = ggplotGrob(
+      fig_inset_a
+    ),
+    xmin = bbox[c("xmin")] + 1000,
+    xmax = bbox[c("xmin")] + 7500,
+    ymax = bbox["ymin"] + 21000,
+    ymin = bbox["ymin"] + 13600
   )
+```
+
+```{r}
+ggsave(fig_main, filename = "figures/fig_map2.png",
+  height=9, width=13)
 ```
 
 ## Make where plot
@@ -220,15 +252,14 @@ fig_inset_a <-
   ggplot()+
   geom_sf(
     data = za,
-    fill = "tan3",
-    alpha = 0.5,
+    fill = "tan",
+    # alpha = 0.5,
+    show.legend = F,
     col = NA
   )+
-  annotate(
-    geom = "point",
-    x = 31.5,
-    y = -24,
-    size = 10,
+  geom_sf(
+    data = kruger_point,
+    size = 5
   )+
   scale_y_continuous(
     breaks = seq(-22, -34, -6)
@@ -240,19 +271,20 @@ fig_inset_a <-
       colour = "grey20"
     ),
     # axis.ticks = element_line(),
-    axis.ticks.length = unit(2, units = "mm"),
-    axis.text.y = element_text(margin = margin(r = -25)),
-    axis.text.x = element_text(margin = margin(t = -20)),
-    panel.grid = element_line(colour = "grey40", 
-                              size = 0.1),
-    text = element_text(
-      family = "IBM Plex Sans"
-    ), 
+    # axis.ticks.length = unit(2, units = "mm"),
+    # axis.text.y = element_text(margin = margin(r = -25)),
+    # axis.text.x = element_text(margin = margin(t = -20)),
+    # panel.grid = element_line(colour = "grey40", 
+    #                           size = 0.1),
+    # text = element_text(
+    #   family = "IBM Plex Sans"
+    # ), 
     plot.margin = unit(rep(2, 4), "mm")
   )+
   coord_sf(
-    xlim = c(12, 37),
-    ylim = c(-36, -20),
+    # xlim = c((bbox["xmin"] - 2e6), (bbox["xmax"] + 4e5)),
+    # ylim = c(bbox["ymin"] - 1.25e6, bbox["ymax"] + 8e5),
+    # crs = 32736,
     expand = FALSE
   )
 ```
@@ -265,17 +297,11 @@ fig_inset_b <-
   ggplot()+
   geom_sf(
     data = kruger,
-    fill = "tan4",
-    alpha = 0.2,
+    fill = "grey99",
+    alpha = 1,
     col = NA,
     lwd = 0.2
   )+
-  # geom_tile(data = data_count,
-  #           aes(xutm, yutm,
-  #               fill = N),
-  #           lwd = 0.1,
-  #           # col = "grey",
-  #           show.legend = FALSE)+
   geom_sf(
     data = data,
     lwd = c(0.1),
@@ -293,12 +319,6 @@ fig_inset_b <-
     xmax = bbox["xmax"],
     ymin = bbox["ymin"], 
     ymax = bbox["ymax"]
-  )+
-  scico::scale_fill_scico(
-    palette = "bilbao",
-    begin = c(0.2), 
-    direction = 1,
-    trans = "log10"
   )+
   annotation_north_arrow(
     style = north_arrow_minimal(
@@ -324,7 +344,7 @@ fig_inset_b <-
     panel.background = element_rect(
       colour = "grey20",
       # size = 0.2,
-      fill = "cornsilk1"
+      fill = "tan"
     ),
     plot.margin = unit(rep(1, 4), "mm")
   )
@@ -333,7 +353,9 @@ fig_inset_b <-
 ## Marge plots
 
 ```{r}
-library(patchwork)
+
+
+
 ```
 
 

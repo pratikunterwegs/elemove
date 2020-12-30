@@ -91,26 +91,9 @@ st_write(data_sf,
 
 ```{r}
 # get natural earth data
-land <- rnaturalearth::ne_download(type = "land", 
-                                   category = "physical",
-                                   scale = "small",
-                                   returnclass = "sf")
-```
-
-```{r crop_data}
-# za box
-za_box <- st_bbox(
-  st_multipoint(
-    matrix(c(-20, -39,
-             40, -10), 
-           nrow = 2,
-           byrow = T)))
-za_box <- st_as_sfc(za_box, crs = 4326)
-
-# crop
-za <- st_crop(land,
-              za_box)
+land <- ne_countries(continent = 'africa', scale = "small",
+  returnclass = "sf")
 
 # save
-st_write(za, "data/za_boundary.gpkg")
+st_write(land, "data/za_boundary.gpkg", append = F)
 ```
