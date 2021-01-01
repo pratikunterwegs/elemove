@@ -418,14 +418,7 @@ fig_main +
 ## -----------------------------------------------------------------------------
 # wide 16:9
 ggsave(fig_main,
-  filename = "figures/fig_map_wide.png",
+  filename = "figures/fig_map_wide_docker.png",
   height = 9, width = 16,
   bg = "grey"
 )
-# regular 4:3
-ggsave(fig_main,
-  filename = "figures/fig_map_reg.png",
-  height = 9, width = 12,
-  bg = "grey"
-)
-
