@@ -130,7 +130,7 @@ fig_inset_a <-
     data = africa[africa$name == "South Africa", ],
     fill = "sienna",
     col = NA
-  )+
+  ) +
   geom_sf(
     data = kruger_point,
     size = 5
