@@ -19,8 +19,8 @@ make-kruger-inset
 make-main-figure
 prepare-textbox
 prepare-movement-plot
-add-text-box
 add-decoration
 add-insets
+add-text-box
 add-some-labels
 save-figure
