@@ -23,6 +23,11 @@ library(ggtext)
 library(scico)
 
 #' 
+## -----------------------------------------------------------------------------
+rot30 <- function(geom, a) geom * matrix(c(cos(a), sin(a), -sin(a), cos(a)), 2, 2)
+
+#' 
+#' 
 #' ## Load data
 #' 
 #' ### Prepare extent
@@ -30,7 +35,7 @@ library(scico)
 ## -----------------------------------------------------------------------------
 # prepare bounding box
 bbox <- c(
-  xmin = 342000,
+  xmin = 330000,
   xmax = 393000,
   ymin = 7260000,
   ymax = 7298050
@@ -50,7 +55,7 @@ data <- st_read("data/data_lines_elephants.gpkg")
 data_253 <- data[data$id == "AM253", ]
 
 # get other data
-data_rest <- data[data$id %in% c("AM255", "AM99", "AM239"), ]
+data_rest <- data[data$id %in% c("AM255", "AM99", "AM239", "AM308"), ]
 
 #' 
 #' ### Load boundary data
@@ -122,6 +127,11 @@ fig_inset_a <-
     col = NA
   ) +
   geom_sf(
+    data = africa[africa$name == "South Africa", ],
+    fill = "sienna",
+    col = NA
+  )+
+  geom_sf(
     data = kruger_point,
     size = 5
   ) +
@@ -151,17 +161,17 @@ fig_inset_b <-
   ggplot() +
   geom_sf(
     data = kruger,
-    fill = "aliceblue",
+    fill = "tan",
     alpha = 0.8,
     col = NA,
-    lwd = 0.2
+    lwd = 0.3
   ) +
   geom_sf(
     data = data,
     lwd = c(0.1),
     lty = 1,
-    alpha = c(0.4),
-    col = pal[3]
+    alpha = c(0.3),
+    col = pal[2]
   ) +
   annotate(
     geom = "rect",
@@ -186,7 +196,7 @@ fig_inset_b <-
   ) +
   theme(
     panel.background = element_rect(
-      fill = "tan"
+      fill = "grey90"
     ),
     panel.border = element_rect(
       colour = "grey20",
@@ -204,20 +214,23 @@ fig_inset_b <-
 textbox <- glue(
   "**Kruger Elephants Shuttle to Water**
 
-  African elephants move as they please, yet they need water to help them \\
+  African elephants move as they please, \\
+  ignoring park boundaries when it suits them. \\
+  Yet they need water to help them \\
   through the thermal landscape (_blue: cool, orange: warm_; LANDSAT 5 \\
   2007 -- 2009 average). \\
   In Kruger, elephants frequent water sources during the afternoon, the \\
   hottest part of the day; arriving and leaving at high speed. \\
-  Here, elephant _AM253_ (red) and her herd trace loops to and from water, \\
-  keeping to 'their' side of water sources, \\
-  while other herds (grey) keep to theirs. \\
-  Elephants apparently avoid the cooler conditions of _Acacia_ woodland, seen \\
-  here as the central blue patch."
+  Here, elephant _AM253_ (red) and her herd seem anchored to specific \\
+  water sources, tracing loops to and from them, \\
+  while avoiding other herds (grey). \\
+  Elephants apparently also avoid the cooler conditions of _Acacia_ woodland, \\
+  seen here as the central blue patch. \\
+  Read more: _Thaker, Gupte, et al. (2019). Front. Ecol. Evol._"
 )
 # texttitle = "Elephants Shuttle to Water"
 textdata <- data.table(
-  x = bbox["xmin"] + 6000,
+  x = bbox["xmin"] + 5000,
   y = bbox["ymax"] - 9000,
   label = textbox
 )
@@ -248,14 +261,14 @@ fig_main <-
   ) +
   geom_sf(
     data = data_rest,
-    lwd = c(0.15, 0.15, 0.15),
+    lwd = c(0.15),
     lty = 1,
-    alpha = c(0.2, 0.8, 0.15),
-    col = pal[c(2, 3, 2)]
+    alpha = c(0.2, 0.7, 0.3, 0.15),
+    col = pal[c(2, 3, 2, 3)]
   ) +
   geom_sf(
     data = data_253,
-    lwd = 0.15,
+    lwd = 0.2,
     alpha = 1,
     col = scico::scico(7,
       palette = "bilbao"
@@ -282,28 +295,11 @@ fig_main <-
   )
 
 #' 
-#' ### Add text box
-#' 
-## -----------------------------------------------------------------------------
-fig_main <- fig_main +
-  geom_textbox(
-    data = textdata,
-    aes(
-      x, y,
-      label = label
-    ),
-    family = "IBM Plex Sans",
-    size = 3,
-    colour = "grey20",
-    fill = alpha("antiquewhite", 0.3),
-    box.color = NA
-  )
-
-#' 
 #' ### Add decoration
 #' 
 ## -----------------------------------------------------------------------------
-fig_main <- fig_main +
+fig_main <-
+  fig_main +
   annotation_north_arrow(
     style = north_arrow_minimal(
       text_family = "IBM Plex Sans",
@@ -337,7 +333,8 @@ fig_main <- fig_main +
 #' ### Add insets
 #' 
 ## -----------------------------------------------------------------------------
-fig_main <- fig_main +
+fig_main <-
+  fig_main +
   annotation_custom(
     grob = ggplotGrob(
       fig_inset_b
@@ -358,13 +355,32 @@ fig_main <- fig_main +
   )
 
 #' 
+#' ### Add text box
+#' 
+## -----------------------------------------------------------------------------
+fig_main <-
+  fig_main +
+  geom_textbox(
+    data = textdata,
+    aes(
+      x, y,
+      label = label
+    ),
+    family = "IBM Plex Sans",
+    size = 3,
+    colour = "grey20",
+    fill = alpha("aliceblue", 0.2),
+    box.color = alpha("grey", 0.5)
+  )
+
+#' 
 ## -----------------------------------------------------------------------------
 textlabels <- data.table(
   x = bbox["xmax"] - c(8000, 18000),
   xend = bbox["xmax"] - c(5000, 6000),
   y = bbox["ymin"] + c(23500, 15000),
   yend = bbox["ymin"] + c(12000, 9000),
-  label = c("warmer\nhere", "cooler\nhere")
+  label = c("Warmer\nMarula\nSavanna", "Cooler\nAcacia\nThickets")
 )
 
 #' 
@@ -376,7 +392,7 @@ fig_main <-
   annotate(
     geom = "text",
     x = bbox[c("xmin")] +
-      c(10000, 20000),
+      c(20000, 30000),
     y = bbox["ymin"] +
       c(12600, 14400),
     label = c(
@@ -385,7 +401,7 @@ fig_main <-
     ),
     fontface = "italic",
     family = "IBM Plex Serif",
-    alpha = c(0.4, 0.4),
+    alpha = c(0.5, 0.5),
     size = c(4, 5)
   ) +
   geom_text(
@@ -396,8 +412,7 @@ fig_main <-
     fontface = "italic",
     family = "IBM Plex Serif",
     alpha = c(0.5, 0.5),
-    col = "grey20",
-    size = c(5, 5)
+    size = c(3, 3)
   )
 
 #' 
@@ -418,7 +433,8 @@ fig_main +
 ## -----------------------------------------------------------------------------
 # wide 16:9
 ggsave(fig_main,
-  filename = "figures/fig_map_wide_docker.png",
+  filename = "figures/fig_map_wide.png",
   height = 9, width = 16,
   bg = "grey"
 )
+
