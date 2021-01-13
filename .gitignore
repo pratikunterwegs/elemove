@@ -4,4 +4,10 @@
 .Ruserdata
 
 # no data
-data
+data/*
+# but we do want the temperature layer
+!kruger_temp_200m.tif
+# and the shapefiles
+!kruger_clip
+!river_crop
+!waterholes
