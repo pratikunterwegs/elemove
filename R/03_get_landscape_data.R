@@ -1,23 +1,23 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: console
----
-
-# Getting Background Data
-
-## Load libraries
-
-```{r}
+#' ---
+#' output: html_document
+#' editor_options: 
+#'   chunk_output_type: console
+#' ---
+#' 
+#' # Getting Background Data
+#' 
+#' ## Load libraries
+#' 
+## -----------------------------------------------------------------------------
 # load libs
 library(sf)
 library(rnaturalearth)
 library(osmdata)
-```
 
-## Get Africa landmass from _Natural Earth_
-
-```{r}
+#' 
+#' ## Get Africa landmass from _Natural Earth_
+#' 
+## -----------------------------------------------------------------------------
 # only if local data does not exist
 if (!file.exists("data/africa.gpkg")) {
   # get natural earth data
@@ -29,15 +29,15 @@ if (!file.exists("data/africa.gpkg")) {
   # save
   st_write(land, "data/africa.gpkg", append = F)
 }
-```
 
-## Get Kruger boundary
-
-The Kruger boundary was provided by SANParks.
-
-## Get rivers from OSM
-
-```{r}
+#' 
+#' ## Get Kruger boundary
+#' 
+#' The Kruger boundary was provided by SANParks.
+#' 
+#' ## Get rivers from OSM
+#' 
+## -----------------------------------------------------------------------------
 # if data does not already exist
 if (!file.exists("data/rivers_kruger.gpkg")) {
   # kruger bounding box
@@ -64,15 +64,15 @@ if (!file.exists("data/rivers_kruger.gpkg")) {
     "data/rivers_kruger.gpkg"
   )
 }
-```
 
-## Get Waterholes
-
-Waterhole locations were provided by Abi Vanak and Maria Thaker, originally from SANParks.
-
-## Process LANDSAT data
-
-```{r}
+#' 
+#' ## Get Waterholes
+#' 
+#' Waterhole locations were provided by Abi Vanak and Maria Thaker, originally from SANParks.
+#' 
+#' ## Process LANDSAT data
+#' 
+## -----------------------------------------------------------------------------
 # read data
 temp <- raster("data/kruger_landsat5_temp.tif")
 
@@ -85,4 +85,4 @@ temp_UTM <- projectRaster(
 
 # save to file
 writeRaster(temp_UTM, filename = "data/kruger_temperature_UTM.tif")
-```
+

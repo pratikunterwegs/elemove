@@ -11,7 +11,7 @@ get-africa-landmass-from-natural-earth
 get-kruger-boundary
 get-rivers-from-osm
 get-waterholes
-get-temperature
+process-landsat-data
 mapping-elephant-movement
 load-libraries-2
 load-data
