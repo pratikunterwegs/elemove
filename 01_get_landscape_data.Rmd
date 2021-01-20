@@ -10,9 +10,9 @@ editor_options:
 
 ```{r}
 # load libs
-library(data.table)
 library(sf)
 library(rnaturalearth)
+library(osmdata)
 ```
 
 ## Get Africa landmass from _Natural Earth_
@@ -30,11 +30,54 @@ if (!file.exists("data/africa.gpkg")) {
   st_write(land, "data/africa.gpkg", append = F)
 }
 ```
+
 ## Get Kruger boundary
+
+The Kruger boundary was provided by SANParks.
 
 ## Get rivers from OSM
 
+```{r}
+# if data does not already exist
+if (!file.exists("data/rivers_kruger.gpkg")) {
+  # kruger bounding box
+  kruger = st_read("data/kruger_clip/")
+  q = opq(bbox = st_bbox(kruger))
+  
+  # make query
+  query_waterways = add_osm_feature(q,
+                                    key = "waterway",
+                                    value = c("river", "stream"))
+  
+  # run query
+  rivers_kruger = osmdata_sf(query_waterways)
+  
+  # get only lines
+  rivers_kruger = rivers_kruger$osm_lines
+  
+  # assign crs
+  st_crs(rivers_kruger) = 4326
+  
+  st_write(rivers_kruger,
+           "data/rivers_kruger.gpkg")
+}
+```
+
 ## Get Waterholes
 
-## Get Temperature
+Waterhole locations were provided by Abi Vanak and Maria Thaker, originally from SANParks.
 
+## Process LANDSAT data
+
+```{r}
+# read data
+temp = raster("data/kruger_landsat5_temp.tif")
+
+# reproject
+temp_UTM = projectRaster(from = temp,
+                         res = 200,
+                         crs = st_crs(32736)$proj4string)
+
+# save to file
+writeRaster(temp_UTM, filename = "data/kruger_temperature_UTM.tif")
+```
