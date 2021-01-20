@@ -8,6 +8,10 @@ make-sf-data-frame
 getting-background-data
 load-libraries-1
 get-africa-landmass-from-natural-earth
+get-kruger-boundary
+get-rivers-from-osm
+get-waterholes
+get-temperature
 mapping-elephant-movement
 load-libraries-2
 load-data
