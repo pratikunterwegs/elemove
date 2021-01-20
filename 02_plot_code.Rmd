@@ -437,4 +437,11 @@ ggsave(fig_main,
   height = 9, width = 16,
   bg = "grey"
 )
+# a low res version
+ggsave(fig_main,
+  filename = "figures/fig_map_wide_low_res.png",
+  height = 9, width = 16,
+  bg = "grey",
+  dpi = 72
+)
 ```

@@ -1,7 +1,7 @@
 
 # Kruger Elephant Movement
 
-![](https://github.com/pratikunterwegs/elemove/blob/master/figures/fig_map_wide.png)
+![](https://github.com/pratikunterwegs/elemove/blob/master/figures/fig_map_wide_low_res.png)
 
 ## About this project and data
 
