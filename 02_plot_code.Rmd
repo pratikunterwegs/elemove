@@ -23,11 +23,6 @@ library(ggtext)
 library(scico)
 ```
 
-```{r}
-rot30 <- function(geom, a) geom * matrix(c(cos(a), sin(a), -sin(a), cos(a)), 2, 2)
-```
-
-
 ## Load data
 
 ### Prepare extent
@@ -79,7 +74,7 @@ africa <- st_transform(africa, 32736)
 
 ```{r}
 # get rivers
-rivers <- st_read("data/river_crop/")
+rivers <- st_read("data/rivers_kruger.gpkg")
 rivers <- st_transform(rivers[is.na(rivers$seasonal), ], 32736)
 
 # waterholes
@@ -113,7 +108,6 @@ setnames(temp, "V3", "temp")
 # prepare a blue
 blue <- scico::scico(3, palette = "nuuk")[1]
 ```
-
 
 ## Make Africa Inset
 
@@ -150,7 +144,6 @@ fig_inset_a <-
     expand = T
   )
 ```
-
 
 ## Make Kruger Inset
 
@@ -251,7 +244,7 @@ fig_main <-
     data = temp,
     aes(x, y, fill = temp),
     show.legend = F,
-    alpha = 0.45
+    alpha = 0.6
   ) +
   geom_sf(
     data = rivers[is.na(rivers$seasonal), ],
@@ -282,7 +275,7 @@ fig_main <-
   geom_sf(
     data = kruger,
     col = "grey50",
-    lwd = 0.2,
+    lwd = 0.3,
     fill = NA,
     lty = 2
   ) +
@@ -319,7 +312,7 @@ fig_main <-
   theme(
     panel.background = element_rect(
       colour = "grey",
-      fill = "grey90"
+      fill = alpha("grey75", 1)
     ),
     plot.margin = unit(rep(5, 4), "mm")
   ) +
@@ -369,7 +362,7 @@ fig_main <-
     family = "IBM Plex Sans",
     size = 3,
     colour = "grey20",
-    fill = alpha("aliceblue", 0.2),
+    fill = alpha("aliceblue", 0.5),
     box.color = alpha("grey", 0.5)
   )
 ```
@@ -415,18 +408,6 @@ fig_main <-
     size = c(3, 3)
   )
 ```
-
-```{r}
-fig_main +
-  theme(
-    plot.background =
-      element_rect(
-        fill = "grey80",
-        colour = NA
-      )
-  )
-```
-
 
 ### Save figure
 
