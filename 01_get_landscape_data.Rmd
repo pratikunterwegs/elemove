@@ -30,3 +30,11 @@ if (!file.exists("data/africa.gpkg")) {
   st_write(land, "data/africa.gpkg", append = F)
 }
 ```
+## Get Kruger boundary
+
+## Get rivers from OSM
+
+## Get Waterholes
+
+## Get Temperature
+
