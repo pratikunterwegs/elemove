@@ -280,7 +280,7 @@ fig_main <-
     lty = 2
   ) +
   scale_fill_gradientn(
-    colours = scico(10,
+    colours = scico(20,
       palette = "vik",
       direction = 1,
       begin = 0., end = 1
@@ -312,7 +312,7 @@ fig_main <-
   theme(
     panel.background = element_rect(
       colour = "grey",
-      fill = alpha("grey75", 1)
+      fill = alpha("khaki4", 0.4)
     ),
     plot.margin = unit(rep(5, 4), "mm")
   ) +
@@ -387,14 +387,14 @@ fig_main <-
     x = bbox[c("xmin")] +
       c(20000, 30000),
     y = bbox["ymin"] +
-      c(12600, 14400),
+      c(12600, 15400),
     label = c(
       "Private\nNature\nReserves",
       "Kruger\nNational\nPark"
     ),
     fontface = "italic",
     family = "IBM Plex Serif",
-    alpha = c(0.5, 0.5),
+    alpha = c(0.55, 0.5),
     size = c(4, 5)
   ) +
   geom_text(
