@@ -31,7 +31,7 @@ COPY ./R /R
 RUN mkdir -p /figures
 
 CMD Rscript R/01_get_elephant_data.R
-CMD R/01_get_landscape_data.R
-CMD Rscript R/02_plot_code.R
+CMD Rscript R/03_get_landscape_data.R
+CMD Rscript R/04_plot_code.R
 
 RUN echo "done"

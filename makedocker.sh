@@ -4,4 +4,4 @@
 sudo docker build -t pratik/elemove .
 
 # to run the docker
-sudo docker run --rm -v ./figures:/figures pratik/elemove
+sudo docker run --rm -v figures:/figures pratik/elemove
