@@ -24,7 +24,7 @@
 <meta name="author" content="Pratik R. Gupte" />
 
 
-<meta name="date" content="2021-01-20" />
+<meta name="date" content="2021-01-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -430,7 +430,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb22-46" title="46">    <span class="dt">lty =</span> <span class="dv">2</span></a>
 <a class="sourceLine" id="cb22-47" title="47">  ) <span class="op">+</span></a>
 <a class="sourceLine" id="cb22-48" title="48"><span class="st">  </span><span class="kw">scale_fill_gradientn</span>(</a>
-<a class="sourceLine" id="cb22-49" title="49">    <span class="dt">colours =</span> <span class="kw">scico</span>(<span class="dv">10</span>,</a>
+<a class="sourceLine" id="cb22-49" title="49">    <span class="dt">colours =</span> <span class="kw">scico</span>(<span class="dv">20</span>,</a>
 <a class="sourceLine" id="cb22-50" title="50">      <span class="dt">palette =</span> <span class="st">&quot;vik&quot;</span>,</a>
 <a class="sourceLine" id="cb22-51" title="51">      <span class="dt">direction =</span> <span class="dv">1</span>,</a>
 <a class="sourceLine" id="cb22-52" title="52">      <span class="dt">begin =</span> <span class="fl">0.</span>, <span class="dt">end =</span> <span class="dv">1</span></a>
@@ -460,7 +460,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb23-19" title="19"><span class="st">  </span><span class="kw">theme</span>(</a>
 <a class="sourceLine" id="cb23-20" title="20">    <span class="dt">panel.background =</span> <span class="kw">element_rect</span>(</a>
 <a class="sourceLine" id="cb23-21" title="21">      <span class="dt">colour =</span> <span class="st">&quot;grey&quot;</span>,</a>
-<a class="sourceLine" id="cb23-22" title="22">      <span class="dt">fill =</span> <span class="kw">alpha</span>(<span class="st">&quot;grey75&quot;</span>, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb23-22" title="22">      <span class="dt">fill =</span> <span class="kw">alpha</span>(<span class="st">&quot;khaki4&quot;</span>, <span class="fl">0.4</span>)</a>
 <a class="sourceLine" id="cb23-23" title="23">    ),</a>
 <a class="sourceLine" id="cb23-24" title="24">    <span class="dt">plot.margin =</span> <span class="kw">unit</span>(<span class="kw">rep</span>(<span class="dv">5</span>, <span class="dv">4</span>), <span class="st">&quot;mm&quot;</span>)</a>
 <a class="sourceLine" id="cb23-25" title="25">  ) <span class="op">+</span></a>
@@ -526,14 +526,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb27-5" title="5">    <span class="dt">x =</span> bbox[<span class="kw">c</span>(<span class="st">&quot;xmin&quot;</span>)] <span class="op">+</span></a>
 <a class="sourceLine" id="cb27-6" title="6"><span class="st">      </span><span class="kw">c</span>(<span class="dv">20000</span>, <span class="dv">30000</span>),</a>
 <a class="sourceLine" id="cb27-7" title="7">    <span class="dt">y =</span> bbox[<span class="st">&quot;ymin&quot;</span>] <span class="op">+</span></a>
-<a class="sourceLine" id="cb27-8" title="8"><span class="st">      </span><span class="kw">c</span>(<span class="dv">12600</span>, <span class="dv">14400</span>),</a>
+<a class="sourceLine" id="cb27-8" title="8"><span class="st">      </span><span class="kw">c</span>(<span class="dv">12600</span>, <span class="dv">15400</span>),</a>
 <a class="sourceLine" id="cb27-9" title="9">    <span class="dt">label =</span> <span class="kw">c</span>(</a>
 <a class="sourceLine" id="cb27-10" title="10">      <span class="st">&quot;Private</span><span class="ch">\n</span><span class="st">Nature</span><span class="ch">\n</span><span class="st">Reserves&quot;</span>,</a>
 <a class="sourceLine" id="cb27-11" title="11">      <span class="st">&quot;Kruger</span><span class="ch">\n</span><span class="st">National</span><span class="ch">\n</span><span class="st">Park&quot;</span></a>
 <a class="sourceLine" id="cb27-12" title="12">    ),</a>
 <a class="sourceLine" id="cb27-13" title="13">    <span class="dt">fontface =</span> <span class="st">&quot;italic&quot;</span>,</a>
 <a class="sourceLine" id="cb27-14" title="14">    <span class="dt">family =</span> <span class="st">&quot;IBM Plex Serif&quot;</span>,</a>
-<a class="sourceLine" id="cb27-15" title="15">    <span class="dt">alpha =</span> <span class="kw">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>),</a>
+<a class="sourceLine" id="cb27-15" title="15">    <span class="dt">alpha =</span> <span class="kw">c</span>(<span class="fl">0.55</span>, <span class="fl">0.5</span>),</a>
 <a class="sourceLine" id="cb27-16" title="16">    <span class="dt">size =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">5</span>)</a>
 <a class="sourceLine" id="cb27-17" title="17">  ) <span class="op">+</span></a>
 <a class="sourceLine" id="cb27-18" title="18"><span class="st">  </span><span class="kw">geom_text</span>(</a>
