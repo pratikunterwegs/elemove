@@ -25,3 +25,5 @@ Imports:
     rnaturalearth,
     move,
     glue
+Suggests:
+    knitr
