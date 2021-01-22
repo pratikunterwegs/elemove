@@ -61,7 +61,7 @@ kruger <- st_read("data/kruger_clip/")
 kruger <- st_transform(kruger, 32736)
 
 # get inversion
-kruger_invert = st_difference(
+kruger_invert <- st_difference(
   st_as_sfc(st_bbox(kruger)),
   kruger
 )
@@ -289,7 +289,7 @@ fig_main <-
     data = kruger_invert,
     fill = alpha("grey80", 0.35),
     col = NA
-  )+
+  ) +
   scale_fill_gradientn(
     colours = scico(20,
       palette = "vik",

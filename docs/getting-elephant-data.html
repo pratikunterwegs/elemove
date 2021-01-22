@@ -24,7 +24,7 @@
 <meta name="author" content="Pratik R. Gupte" />
 
 
-<meta name="date" content="2021-01-21" />
+<meta name="date" content="2021-01-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -191,16 +191,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="get-elephant-data-from-movebank" class="section level2">
 <h2><span class="header-section-number">2.2</span> Get elephant data from <em>Movebank</em></h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># check if local data exists and then get if not</span></a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="cf">if</span> (<span class="op">!</span><span class="kw">file.exists</span>(<span class="st">&quot;data/data_lines_elephants.gpkg&quot;</span>)) {</a>
-<a class="sourceLine" id="cb2-3" title="3">  data &lt;-<span class="st"> </span><span class="kw">getDataRepositoryData</span>(<span class="st">&quot;doi:10.5441/001/1.403h24q5&quot;</span>)</a>
-<a class="sourceLine" id="cb2-4" title="4"></a>
-<a class="sourceLine" id="cb2-5" title="5">  <span class="co"># save as rdata</span></a>
-<a class="sourceLine" id="cb2-6" title="6">  <span class="kw">save</span>(data, <span class="dt">file =</span> <span class="st">&quot;data/elephant_data.Rdata&quot;</span>)</a>
-<a class="sourceLine" id="cb2-7" title="7">}</a>
-<a class="sourceLine" id="cb2-8" title="8"></a>
-<a class="sourceLine" id="cb2-9" title="9"><span class="co"># extract data from the move object</span></a>
-<a class="sourceLine" id="cb2-10" title="10"><span class="co"># which is the most labyrinthine object class ever</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">message</span>(<span class="st">&quot;acquiring elephant data&quot;</span>)</a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="co"># check if local data exists and then get if not</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="cf">if</span> (<span class="op">!</span><span class="kw">file.exists</span>(<span class="st">&quot;data/data_lines_elephants.gpkg&quot;</span>)) {</a>
+<a class="sourceLine" id="cb2-4" title="4">  data &lt;-<span class="st"> </span><span class="kw">getDataRepositoryData</span>(<span class="st">&quot;doi:10.5441/001/1.403h24q5&quot;</span>)</a>
+<a class="sourceLine" id="cb2-5" title="5"></a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="co"># save as rdata</span></a>
+<a class="sourceLine" id="cb2-7" title="7">  <span class="kw">save</span>(data, <span class="dt">file =</span> <span class="st">&quot;data/elephant_data.Rdata&quot;</span>)</a>
+<a class="sourceLine" id="cb2-8" title="8">  <span class="kw">message</span>(<span class="st">&quot;acquired elephant data&quot;</span>)</a>
+<a class="sourceLine" id="cb2-9" title="9">} <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb2-10" title="10">  <span class="kw">message</span>(<span class="st">&quot;elephant data already available&quot;</span>)</a>
+<a class="sourceLine" id="cb2-11" title="11">}</a>
+<a class="sourceLine" id="cb2-12" title="12"></a>
+<a class="sourceLine" id="cb2-13" title="13"><span class="co"># extract data from the move object</span></a>
+<a class="sourceLine" id="cb2-14" title="14"><span class="co"># which is the most labyrinthine object class ever</span></a></code></pre></div>
 </div>
 <div id="extract-useful-data-from-move-object" class="section level2">
 <h2><span class="header-section-number">2.3</span> Extract useful data from <code>move</code> object</h2>
@@ -261,7 +265,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb6-18" title="18"><span class="kw">st_write</span>(data_sf,</a>
 <a class="sourceLine" id="cb6-19" title="19">  <span class="dt">dsn =</span> <span class="st">&quot;data/data_lines_elephants.gpkg&quot;</span>,</a>
 <a class="sourceLine" id="cb6-20" title="20">  <span class="dt">append =</span> <span class="ot">FALSE</span></a>
-<a class="sourceLine" id="cb6-21" title="21">)</a></code></pre></div>
+<a class="sourceLine" id="cb6-21" title="21">)</a>
+<a class="sourceLine" id="cb6-22" title="22"></a>
+<a class="sourceLine" id="cb6-23" title="23"><span class="kw">message</span>(<span class="st">&quot;elephant data converted to paths and saved&quot;</span>)</a></code></pre></div>
 
 </div>
 </div>

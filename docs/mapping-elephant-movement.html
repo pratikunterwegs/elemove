@@ -24,7 +24,7 @@
 <meta name="author" content="Pratik R. Gupte" />
 
 
-<meta name="date" content="2021-01-21" />
+<meta name="date" content="2021-01-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -229,10 +229,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb14-2" title="2">kruger &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;data/kruger_clip/&quot;</span>)</a>
 <a class="sourceLine" id="cb14-3" title="3">kruger &lt;-<span class="st"> </span><span class="kw">st_transform</span>(kruger, <span class="dv">32736</span>)</a>
 <a class="sourceLine" id="cb14-4" title="4"></a>
-<a class="sourceLine" id="cb14-5" title="5"><span class="co"># get kruger point -- this is hardcoded but could also be a centroid</span></a>
-<a class="sourceLine" id="cb14-6" title="6">kruger_point &lt;-<span class="st"> </span><span class="kw">st_point</span>(<span class="kw">c</span>(<span class="fl">31.5</span>, <span class="dv">-24</span>))</a>
-<a class="sourceLine" id="cb14-7" title="7">kruger_point &lt;-<span class="st"> </span><span class="kw">st_sfc</span>(kruger_point, <span class="dt">crs =</span> <span class="dv">4326</span>)</a>
-<a class="sourceLine" id="cb14-8" title="8">kruger_point &lt;-<span class="st"> </span><span class="kw">st_transform</span>(kruger_point, <span class="dv">32736</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb14-5" title="5"><span class="co"># get inversion</span></a>
+<a class="sourceLine" id="cb14-6" title="6">kruger_invert &lt;-<span class="st"> </span><span class="kw">st_difference</span>(</a>
+<a class="sourceLine" id="cb14-7" title="7">  <span class="kw">st_as_sfc</span>(<span class="kw">st_bbox</span>(kruger)),</a>
+<a class="sourceLine" id="cb14-8" title="8">  kruger</a>
+<a class="sourceLine" id="cb14-9" title="9">)</a>
+<a class="sourceLine" id="cb14-10" title="10"></a>
+<a class="sourceLine" id="cb14-11" title="11"><span class="co"># get kruger point -- this is hardcoded but could also be a centroid</span></a>
+<a class="sourceLine" id="cb14-12" title="12">kruger_point &lt;-<span class="st"> </span><span class="kw">st_point</span>(<span class="kw">c</span>(<span class="fl">31.5</span>, <span class="dv">-24</span>))</a>
+<a class="sourceLine" id="cb14-13" title="13">kruger_point &lt;-<span class="st"> </span><span class="kw">st_sfc</span>(kruger_point, <span class="dt">crs =</span> <span class="dv">4326</span>)</a>
+<a class="sourceLine" id="cb14-14" title="14">kruger_point &lt;-<span class="st"> </span><span class="kw">st_transform</span>(kruger_point, <span class="dv">32736</span>)</a></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="co"># get africa for inset</span></a>
 <a class="sourceLine" id="cb15-2" title="2">africa &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;data/africa.gpkg&quot;</span>)</a>
 <a class="sourceLine" id="cb15-3" title="3">africa &lt;-<span class="st"> </span><span class="kw">st_transform</span>(africa, <span class="dv">32736</span>)</a></code></pre></div>
@@ -429,13 +435,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb22-45" title="45">    <span class="dt">fill =</span> <span class="ot">NA</span>,</a>
 <a class="sourceLine" id="cb22-46" title="46">    <span class="dt">lty =</span> <span class="dv">2</span></a>
 <a class="sourceLine" id="cb22-47" title="47">  ) <span class="op">+</span></a>
-<a class="sourceLine" id="cb22-48" title="48"><span class="st">  </span><span class="kw">scale_fill_gradientn</span>(</a>
-<a class="sourceLine" id="cb22-49" title="49">    <span class="dt">colours =</span> <span class="kw">scico</span>(<span class="dv">20</span>,</a>
-<a class="sourceLine" id="cb22-50" title="50">      <span class="dt">palette =</span> <span class="st">&quot;vik&quot;</span>,</a>
-<a class="sourceLine" id="cb22-51" title="51">      <span class="dt">direction =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb22-52" title="52">      <span class="dt">begin =</span> <span class="fl">0.</span>, <span class="dt">end =</span> <span class="dv">1</span></a>
-<a class="sourceLine" id="cb22-53" title="53">    )</a>
-<a class="sourceLine" id="cb22-54" title="54">  )</a></code></pre></div>
+<a class="sourceLine" id="cb22-48" title="48"><span class="st">  </span><span class="kw">geom_sf</span>(</a>
+<a class="sourceLine" id="cb22-49" title="49">    <span class="dt">data =</span> kruger_invert,</a>
+<a class="sourceLine" id="cb22-50" title="50">    <span class="dt">fill =</span> <span class="kw">alpha</span>(<span class="st">&quot;grey80&quot;</span>, <span class="fl">0.35</span>),</a>
+<a class="sourceLine" id="cb22-51" title="51">    <span class="dt">col =</span> <span class="ot">NA</span></a>
+<a class="sourceLine" id="cb22-52" title="52">  ) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-53" title="53"><span class="st">  </span><span class="kw">scale_fill_gradientn</span>(</a>
+<a class="sourceLine" id="cb22-54" title="54">    <span class="dt">colours =</span> <span class="kw">scico</span>(<span class="dv">20</span>,</a>
+<a class="sourceLine" id="cb22-55" title="55">      <span class="dt">palette =</span> <span class="st">&quot;vik&quot;</span>,</a>
+<a class="sourceLine" id="cb22-56" title="56">      <span class="dt">direction =</span> <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb22-57" title="57">      <span class="dt">begin =</span> <span class="fl">0.</span>, <span class="dt">end =</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb22-58" title="58">    )</a>
+<a class="sourceLine" id="cb22-59" title="59">  ) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-60" title="60"><span class="st">  </span><span class="kw">coord_sf</span>(</a>
+<a class="sourceLine" id="cb22-61" title="61">    <span class="dt">xlim =</span> bbox[<span class="kw">c</span>(<span class="st">&quot;xmin&quot;</span>, <span class="st">&quot;xmax&quot;</span>)],</a>
+<a class="sourceLine" id="cb22-62" title="62">    <span class="dt">ylim =</span> bbox[<span class="kw">c</span>(<span class="st">&quot;ymin&quot;</span>, <span class="st">&quot;ymax&quot;</span>)],</a>
+<a class="sourceLine" id="cb22-63" title="63">    <span class="dt">expand =</span> <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="cb22-64" title="64">  )</a></code></pre></div>
 </div>
 <div id="add-decoration" class="section level3">
 <h3><span class="header-section-number">4.5.3</span> Add decoration</h3>
@@ -458,17 +474,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb23-17" title="17">  ) <span class="op">+</span></a>
 <a class="sourceLine" id="cb23-18" title="18"><span class="st">  </span><span class="kw">theme_void</span>() <span class="op">+</span></a>
 <a class="sourceLine" id="cb23-19" title="19"><span class="st">  </span><span class="kw">theme</span>(</a>
-<a class="sourceLine" id="cb23-20" title="20">    <span class="dt">panel.background =</span> <span class="kw">element_rect</span>(</a>
-<a class="sourceLine" id="cb23-21" title="21">      <span class="dt">colour =</span> <span class="st">&quot;grey&quot;</span>,</a>
-<a class="sourceLine" id="cb23-22" title="22">      <span class="dt">fill =</span> <span class="kw">alpha</span>(<span class="st">&quot;khaki4&quot;</span>, <span class="fl">0.4</span>)</a>
-<a class="sourceLine" id="cb23-23" title="23">    ),</a>
+<a class="sourceLine" id="cb23-20" title="20">    <span class="co"># panel.background = element_rect(</span></a>
+<a class="sourceLine" id="cb23-21" title="21">    <span class="co">#   colour = &quot;grey&quot;,</span></a>
+<a class="sourceLine" id="cb23-22" title="22">    <span class="co">#   fill = alpha(&quot;grey&quot;, 0.5)</span></a>
+<a class="sourceLine" id="cb23-23" title="23">    <span class="co"># ),</span></a>
 <a class="sourceLine" id="cb23-24" title="24">    <span class="dt">plot.margin =</span> <span class="kw">unit</span>(<span class="kw">rep</span>(<span class="dv">5</span>, <span class="dv">4</span>), <span class="st">&quot;mm&quot;</span>)</a>
-<a class="sourceLine" id="cb23-25" title="25">  ) <span class="op">+</span></a>
-<a class="sourceLine" id="cb23-26" title="26"><span class="st">  </span><span class="kw">coord_sf</span>(</a>
-<a class="sourceLine" id="cb23-27" title="27">    <span class="dt">xlim =</span> bbox[<span class="kw">c</span>(<span class="st">&quot;xmin&quot;</span>, <span class="st">&quot;xmax&quot;</span>)],</a>
-<a class="sourceLine" id="cb23-28" title="28">    <span class="dt">ylim =</span> bbox[<span class="kw">c</span>(<span class="st">&quot;ymin&quot;</span>, <span class="st">&quot;ymax&quot;</span>)],</a>
-<a class="sourceLine" id="cb23-29" title="29">    <span class="dt">expand =</span> <span class="ot">FALSE</span></a>
-<a class="sourceLine" id="cb23-30" title="30">  )</a></code></pre></div>
+<a class="sourceLine" id="cb23-25" title="25">  )</a></code></pre></div>
 </div>
 <div id="add-insets" class="section level3">
 <h3><span class="header-section-number">4.5.4</span> Add insets</h3>

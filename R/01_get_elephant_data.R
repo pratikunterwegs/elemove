@@ -18,12 +18,16 @@ library(sf)
 #' ## Get elephant data from _Movebank_
 #' 
 ## -----------------------------------------------------------------------------
+message("acquiring elephant data")
 # check if local data exists and then get if not
 if (!file.exists("data/data_lines_elephants.gpkg")) {
   data <- getDataRepositoryData("doi:10.5441/001/1.403h24q5")
 
   # save as rdata
   save(data, file = "data/elephant_data.Rdata")
+  message("acquired elephant data")
+} else {
+  message("elephant data already available")
 }
 
 # extract data from the move object
@@ -98,4 +102,6 @@ st_write(data_sf,
   dsn = "data/data_lines_elephants.gpkg",
   append = FALSE
 )
+
+message("elephant data converted to paths and saved")
 
