@@ -60,6 +60,12 @@ data_rest <- data[data$id %in% c("AM255", "AM99", "AM239", "AM308"), ]
 kruger <- st_read("data/kruger_clip/")
 kruger <- st_transform(kruger, 32736)
 
+# get inversion
+kruger_invert = st_difference(
+  st_as_sfc(st_bbox(kruger)),
+  kruger
+)
+
 # get kruger point -- this is hardcoded but could also be a centroid
 kruger_point <- st_point(c(31.5, -24))
 kruger_point <- st_sfc(kruger_point, crs = 4326)
@@ -279,12 +285,22 @@ fig_main <-
     fill = NA,
     lty = 2
   ) +
+  geom_sf(
+    data = kruger_invert,
+    fill = alpha("grey80", 0.35),
+    col = NA
+  )+
   scale_fill_gradientn(
     colours = scico(20,
       palette = "vik",
       direction = 1,
       begin = 0., end = 1
     )
+  ) +
+  coord_sf(
+    xlim = bbox[c("xmin", "xmax")],
+    ylim = bbox[c("ymin", "ymax")],
+    expand = FALSE
   )
 ```
 
@@ -310,16 +326,11 @@ fig_main <-
   ) +
   theme_void() +
   theme(
-    panel.background = element_rect(
-      colour = "grey",
-      fill = alpha("khaki4", 0.4)
-    ),
+    # panel.background = element_rect(
+    #   colour = "grey",
+    #   fill = alpha("grey", 0.5)
+    # ),
     plot.margin = unit(rep(5, 4), "mm")
-  ) +
-  coord_sf(
-    xlim = bbox[c("xmin", "xmax")],
-    ylim = bbox[c("ymin", "ymax")],
-    expand = FALSE
   )
 ```
 
