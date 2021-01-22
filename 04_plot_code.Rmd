@@ -133,7 +133,11 @@ fig_inset_a <-
   ) +
   geom_sf(
     data = kruger_point,
-    size = 5
+    size = 5,
+    fill = NA,
+    shape = 21,
+    colour = "grey20",
+    stroke = 1
   ) +
   scale_y_continuous(
     breaks = seq(-22, -34, -6)
@@ -195,7 +199,7 @@ fig_inset_b <-
   ) +
   theme(
     panel.background = element_rect(
-      fill = "grey90"
+      fill = "grey75"
     ),
     panel.border = element_rect(
       colour = "grey20",
@@ -250,7 +254,7 @@ fig_main <-
     data = temp,
     aes(x, y, fill = temp),
     show.legend = F,
-    alpha = 0.6
+    alpha = 0.4
   ) +
   geom_sf(
     data = rivers[is.na(rivers$seasonal), ],
@@ -290,13 +294,6 @@ fig_main <-
     fill = alpha("grey80", 0.35),
     col = NA
   ) +
-  scale_fill_gradientn(
-    colours = scico(20,
-      palette = "vik",
-      direction = 1,
-      begin = 0., end = 1
-    )
-  ) +
   coord_sf(
     xlim = bbox[c("xmin", "xmax")],
     ylim = bbox[c("ymin", "ymax")],
@@ -326,10 +323,10 @@ fig_main <-
   ) +
   theme_void() +
   theme(
-    # panel.background = element_rect(
-    #   colour = "grey",
-    #   fill = alpha("grey", 0.5)
-    # ),
+    panel.background = element_rect(
+      colour = "grey",
+      fill = alpha("grey", 0.5)
+    ),
     plot.margin = unit(rep(5, 4), "mm")
   )
 ```
@@ -419,6 +416,34 @@ fig_main <-
     size = c(3, 3)
   )
 ```
+
+### Make options
+
+```{r}
+# op1 = fig_main +
+#   scale_fill_gradientn(
+#     colours = scico(20,
+#       palette = "romaO",
+#       direction = -1,
+#       begin = 0., end = 1
+#     )
+#   )
+#
+# op2 = fig_main +
+#   scale_fill_distiller(
+#     palette = "RdYlBu"
+#   )
+
+fig_main <- fig_main +
+  scale_fill_gradientn(
+    colours = scico(20,
+      palette = "vikO",
+      direction = 1,
+      begin = 0., end = 1
+    )
+  )
+```
+
 
 ### Save figure
 

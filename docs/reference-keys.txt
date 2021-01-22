@@ -27,4 +27,5 @@ add-decoration
 add-insets
 add-text-box
 add-some-labels
+make-options
 save-figure
