@@ -84,7 +84,7 @@ rivers <- st_read("data/rivers_kruger.gpkg")
 rivers <- st_transform(rivers[is.na(rivers$seasonal), ], 32736)
 
 # waterholes
-waterholes <- st_read("data/waterholes/")
+waterholes <- st_read("data/waterholes/waterpoints_zambatis_2011.shp")
 
 #' 
 ## -----------------------------------------------------------------------------

@@ -257,7 +257,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb16-3" title="3">rivers &lt;-<span class="st"> </span><span class="kw">st_transform</span>(rivers[<span class="kw">is.na</span>(rivers<span class="op">$</span>seasonal), ], <span class="dv">32736</span>)</a>
 <a class="sourceLine" id="cb16-4" title="4"></a>
 <a class="sourceLine" id="cb16-5" title="5"><span class="co"># waterholes</span></a>
-<a class="sourceLine" id="cb16-6" title="6">waterholes &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;data/waterholes/&quot;</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb16-6" title="6">waterholes &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;data/waterholes/waterpoints_zambatis_2011.shp&quot;</span>)</a></code></pre></div>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="co"># get temperature</span></a>
 <a class="sourceLine" id="cb17-2" title="2"><span class="cf">if</span> (<span class="op">!</span><span class="kw">file.exists</span>(<span class="st">&quot;data/kruger_temp_200m.tif&quot;</span>)) {</a>
 <a class="sourceLine" id="cb17-3" title="3">  res_init &lt;-<span class="st"> </span><span class="kw">res</span>(<span class="kw">raster</span>(<span class="st">&quot;data/kruger_temperature_UTM.tif&quot;</span>))</a>
