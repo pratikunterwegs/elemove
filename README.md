@@ -24,9 +24,10 @@ Essentially, we showed that:
 ![](figures/fig_06_thaker_et_al_2019.png)
 
 
-### Workflow
+### [Workflow](https://pratikunterwegs.github.io/elemove/)
 
 1. Run the numbered `.Rmd` files and iPython notebook, in the order of numbering.
+2. Click on the *blue heading **Workflow*** above to see a `bookdown` version.
 
 ### Reproducibility
 
