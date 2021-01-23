@@ -24,7 +24,7 @@
 <meta name="author" content="Pratik R. Gupte" />
 
 
-<meta name="date" content="2021-01-22" />
+<meta name="date" content="2021-01-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -213,7 +213,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="co"># if data does not already exist</span></a>
 <a class="sourceLine" id="cb9-2" title="2"><span class="cf">if</span> (<span class="op">!</span><span class="kw">file.exists</span>(<span class="st">&quot;data/rivers_kruger.gpkg&quot;</span>)) {</a>
 <a class="sourceLine" id="cb9-3" title="3">  <span class="co"># kruger bounding box</span></a>
-<a class="sourceLine" id="cb9-4" title="4">  kruger &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;data/kruger_clip/&quot;</span>)</a>
+<a class="sourceLine" id="cb9-4" title="4">  kruger &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;data/kruger_clip/kruger_clip.shp&quot;</span>)</a>
 <a class="sourceLine" id="cb9-5" title="5">  q &lt;-<span class="st"> </span><span class="kw">opq</span>(<span class="dt">bbox =</span> <span class="kw">st_bbox</span>(kruger))</a>
 <a class="sourceLine" id="cb9-6" title="6"></a>
 <a class="sourceLine" id="cb9-7" title="7">  <span class="co"># make query</span></a>
@@ -243,18 +243,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="process-landsat-data" class="section level2">
 <h2><span class="header-section-number">3.6</span> Process LANDSAT data</h2>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="co"># read data</span></a>
-<a class="sourceLine" id="cb10-2" title="2">temp &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="st">&quot;data/kruger_landsat5_temp.tif&quot;</span>)</a>
-<a class="sourceLine" id="cb10-3" title="3"></a>
-<a class="sourceLine" id="cb10-4" title="4"><span class="co"># reproject</span></a>
-<a class="sourceLine" id="cb10-5" title="5">temp_UTM &lt;-<span class="st"> </span><span class="kw">projectRaster</span>(</a>
-<a class="sourceLine" id="cb10-6" title="6">  <span class="dt">from =</span> temp,</a>
-<a class="sourceLine" id="cb10-7" title="7">  <span class="dt">res =</span> <span class="dv">200</span>,</a>
-<a class="sourceLine" id="cb10-8" title="8">  <span class="dt">crs =</span> <span class="kw">st_crs</span>(<span class="dv">32736</span>)<span class="op">$</span>proj4string</a>
-<a class="sourceLine" id="cb10-9" title="9">)</a>
-<a class="sourceLine" id="cb10-10" title="10"></a>
-<a class="sourceLine" id="cb10-11" title="11"><span class="co"># save to file</span></a>
-<a class="sourceLine" id="cb10-12" title="12"><span class="kw">writeRaster</span>(temp_UTM, <span class="dt">filename =</span> <span class="st">&quot;data/kruger_temperature_UTM.tif&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="co"># do not evaluate because raster is large and not on GH</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="co"># read data</span></a>
+<a class="sourceLine" id="cb10-3" title="3">temp &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="st">&quot;data/kruger_landsat5_temp.tif&quot;</span>)</a>
+<a class="sourceLine" id="cb10-4" title="4"></a>
+<a class="sourceLine" id="cb10-5" title="5"><span class="co"># reproject</span></a>
+<a class="sourceLine" id="cb10-6" title="6">temp_UTM &lt;-<span class="st"> </span><span class="kw">projectRaster</span>(</a>
+<a class="sourceLine" id="cb10-7" title="7">  <span class="dt">from =</span> temp,</a>
+<a class="sourceLine" id="cb10-8" title="8">  <span class="dt">res =</span> <span class="dv">200</span>,</a>
+<a class="sourceLine" id="cb10-9" title="9">  <span class="dt">crs =</span> <span class="kw">st_crs</span>(<span class="dv">32736</span>)<span class="op">$</span>proj4string</a>
+<a class="sourceLine" id="cb10-10" title="10">)</a>
+<a class="sourceLine" id="cb10-11" title="11"></a>
+<a class="sourceLine" id="cb10-12" title="12"><span class="co"># save to file</span></a>
+<a class="sourceLine" id="cb10-13" title="13"><span class="kw">writeRaster</span>(temp_UTM, <span class="dt">filename =</span> <span class="st">&quot;data/kruger_temperature_UTM.tif&quot;</span>)</a></code></pre></div>
 
 </div>
 </div>

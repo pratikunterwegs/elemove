@@ -41,7 +41,7 @@ if (!file.exists("data/africa.gpkg")) {
 # if data does not already exist
 if (!file.exists("data/rivers_kruger.gpkg")) {
   # kruger bounding box
-  kruger <- st_read("data/kruger_clip/")
+  kruger <- st_read("data/kruger_clip/kruger_clip.shp")
   q <- opq(bbox = st_bbox(kruger))
 
   # make query
