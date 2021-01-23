@@ -72,17 +72,18 @@ if (!file.exists("data/rivers_kruger.gpkg")) {
 #' 
 #' ## Process LANDSAT data
 #' 
-## -----------------------------------------------------------------------------
-# read data
-temp <- raster("data/kruger_landsat5_temp.tif")
-
-# reproject
-temp_UTM <- projectRaster(
-  from = temp,
-  res = 200,
-  crs = st_crs(32736)$proj4string
-)
-
-# save to file
-writeRaster(temp_UTM, filename = "data/kruger_temperature_UTM.tif")
+## ----eval=FALSE---------------------------------------------------------------
+## # do not evaluate because raster is large and not on GH
+## # read data
+## temp <- raster("data/kruger_landsat5_temp.tif")
+## 
+## # reproject
+## temp_UTM <- projectRaster(
+##   from = temp,
+##   res = 200,
+##   crs = st_crs(32736)$proj4string
+## )
+## 
+## # save to file
+## writeRaster(temp_UTM, filename = "data/kruger_temperature_UTM.tif")
 
