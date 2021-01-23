@@ -9,6 +9,12 @@ The map shows elephant movement across the thermal landscape of Kruger National 
 
 As a research assistant with [Maria Thaker](https://mariathaker.weebly.com/) and [Abi Vanak](https://www.atree.org/users/dr-abi-tamim-vanak), I worked on cleaning up some previous work on elephant movement in response to temperature.
 
+Our work was published as
+
+Thaker M, Gupte PR, Prins HHT, et al (2019) Fine-Scale Tracking of Ambient Temperature and Movement Reveals Shuttling Behavior of Elephants to Water. Front Ecol Evol 7:. doi: 10.3389/fevo.2019.00004
+
+Link to the paper: [Thaker, Gupte, et al. (2019)](https://www.frontiersin.org/articles/10.3389/fevo.2019.00004/full)
+
 Essentially, we showed that:
 
 1. Temperature loggers integrated into GPS collars are sufficiently good measures of environmental temperature. They aren't they best solution, but they can be used to examine the effects of temperature on movement in a study that wasn't necessarily designed with this goal.
