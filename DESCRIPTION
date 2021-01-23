@@ -24,6 +24,10 @@ Imports:
     data.table,
     rnaturalearth,
     move,
-    glue
+    glue,
+    osmdata,
+    here,
+    colorspace,
+    bookdown
 Suggests:
     knitr
