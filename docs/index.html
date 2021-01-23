@@ -128,7 +128,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#about-this-project"><i class="fa fa-check"></i><b>1.1</b> About this project</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="index.html"><a href="index.html#workflow"><i class="fa fa-check"></i><b>1.1.1</b> Workflow</a></li>
+<li class="chapter" data-level="1.1.2" data-path="index.html"><a href="index.html#reproducibility"><i class="fa fa-check"></i><b>1.1.2</b> Reproducibility</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#data-access"><i class="fa fa-check"></i><b>1.2</b> Data access</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="index.html"><a href="index.html#landscape-data"><i class="fa fa-check"></i><b>1.2.1</b> Landscape data</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#published-work"><i class="fa fa-check"></i><b>1.3</b> Published work</a></li>
+</ul></li>
 <li class="chapter" data-level="2" data-path="getting-elephant-data.html"><a href="getting-elephant-data.html"><i class="fa fa-check"></i><b>2</b> Getting Elephant Data</a><ul>
 <li class="chapter" data-level="2.1" data-path="getting-elephant-data.html"><a href="getting-elephant-data.html#load-libraries"><i class="fa fa-check"></i><b>2.1</b> Load libraries</a></li>
 <li class="chapter" data-level="2.2" data-path="getting-elephant-data.html"><a href="getting-elephant-data.html#get-elephant-data-from-movebank"><i class="fa fa-check"></i><b>2.2</b> Get elephant data from <em>Movebank</em></a></li>
@@ -188,7 +197,74 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="introduction" class="section level1">
 <h1><span class="header-section-number">Section 1</span> Introduction</h1>
+<p><img src="https://github.com/pratikunterwegs/elemove/blob/master/figures/fig_map_wide_low_res.png" /></p>
+<div id="about-this-project" class="section level2">
+<h2><span class="header-section-number">1.1</span> About this project</h2>
+<p>The map shows elephant movement across the thermal landscape of Kruger National Park, South Africa.</p>
+<p>As a research assistant with <a href="https://mariathaker.weebly.com/">Maria Thaker</a> and <a href="https://www.atree.org/users/dr-abi-tamim-vanak">Abi Vanak</a>, I worked on cleaning up some previous work on elephant movement in response to temperature.</p>
+<p>Our work was published as</p>
+<p>Thaker M, Gupte PR, Prins HHT, et al (2019) Fine-Scale Tracking of Ambient Temperature and Movement Reveals Shuttling Behavior of Elephants to Water. Front Ecol Evol 7:. doi: 10.3389/fevo.2019.00004</p>
+<p>Link to the paper: <a href="https://www.frontiersin.org/articles/10.3389/fevo.2019.00004/full">Thaker, Gupte, et al. (2019)</a></p>
+<p>Essentially, we showed that:</p>
+<ol style="list-style-type: decimal">
+<li>Temperature loggers integrated into GPS collars are sufficiently good measures of environmental temperature. They aren’t they best solution, but they can be used to examine the effects of temperature on movement in a study that wasn’t necessarily designed with this goal.</li>
+<li>Kruger elephants move faster the warmer it gets, and slower in wooded regions.</li>
+<li>Elephants make cyclical visits to water sources, to which they arrive and leave at high speed, as our figure 6 showed:</li>
+</ol>
+<p><img src="figures/fig_06_thaker_et_al_2019.png" /></p>
+<div id="workflow" class="section level3">
+<h3><span class="header-section-number">1.1.1</span> Workflow</h3>
+<ol style="list-style-type: decimal">
+<li>Run the numbered <code>.Rmd</code> files and iPython notebook, in the order of numbering.</li>
+</ol>
+</div>
+<div id="reproducibility" class="section level3">
+<h3><span class="header-section-number">1.1.2</span> Reproducibility</h3>
+<p>I tried making the entire process fully reproducible via a Docker image.
+I eventually decided against it because the image ended up at 2.5 GB, and I don’t believe in using up too much storage space.</p>
+<p>While most aspects of this project are reproducible, the further one gets from the actual mapping code, the less reproducible it gets.</p>
+<p>On the plus side:</p>
+<ol style="list-style-type: decimal">
+<li>An Renv lockfile from which package versions used here can be restored.</li>
+<li>Reproducible code including downloading data from Movebank, and getting landscape data from OpenStreetMap and Google Earth Engine’s LANDSAT copies.</li>
+</ol>
+<p>What isn’t easy to replicate:</p>
+<ol style="list-style-type: decimal">
+<li>Some layers of the data are not in a publicly citable repository or similar, and had to be acquired by asking personally. This includes the Kruger boundaries, and the locations of
+waterholes.</li>
+<li>The primary collection of the tracking data itself cannot be replicated. These elephants were collared in 2007 – 2009. Are they still around? Possibly. Could we entirely reproduce the study by finding, collaring, and following them again? Probably not.</li>
+<li>The primary data <em>has</em> to be taken with trust in the authors/researchers. The original dataset I received had issues! The geographic and UTM coordinates did not correspond for some individuals. This needed to be fixed. This is covered in the code for the original project: <a href="https://pratikunterwegs.github.io/elephantTempKruger/preliminary-data-preparation.html" class="uri">https://pratikunterwegs.github.io/elephantTempKruger/preliminary-data-preparation.html</a>
+It it this repaired (but not otherwise cleaned) data that was uploaded to Movebank.</li>
+</ol>
+</div>
+</div>
+<div id="data-access" class="section level2">
+<h2><span class="header-section-number">1.2</span> Data access</h2>
+<p>This dataset tracks 14 adult female elephants over some 2 years in Kruger National Park, South Africa, and has been used for a number of projects, including seasonal movements, movement in response to fire, and in response to the thermal landscape.</p>
+<p>These projects were led by <a href="https://www.ucl.ac.uk/biosciences/people/professor-rob-slotow">Rob Slotow*</a>, <a href="https://mariathaker.weebly.com/">Maria Thaker</a>, and <a href="https://www.atree.org/users/dr-abi-tamim-vanak">Abi Vanak</a>. See the data access section for citation details.</p>
+<p>I worked on this data in 2017 – 2018 while a research assistant with Maria Thaker and Abi Vanak at CES, IISc, and ATREE, in Bangalore, India.
+I also uploaded the data to Movebank in 2018, and together with Candace Vinciguerra from Movebank, published the dataset under the project leaders’ names in the data repository. The data now forms part of the <em>Movebank</em> homepage animation, which is very cool to see.</p>
+<p>The tracking dataset collected for use in this work is available from Movebank: <a href="https://doi.org/10.5441/001/1.403h24q5" class="uri">https://doi.org/10.5441/001/1.403h24q5</a> and can be cited as</p>
+<p>Slotow R, Thaker M, Vanak AT (2019) Data from: Fine-scale tracking of ambient temperature and movement reveals shuttling behavior of elephants to water. Movebank Data Repository. <a href="doi:10.5441/001/1.403h24q5" class="uri">doi:10.5441/001/1.403h24q5</a></p>
+<div id="landscape-data" class="section level3">
+<h3><span class="header-section-number">1.2.1</span> Landscape data</h3>
+<p>I used LANDSAT 5’s surface reflectance product (band 6) to get the morning temperature over Kruger. The final single-raster data layers is the two year mean, with cloud cover removed. Landsat 5 has anomalies in its images which are fortunately not over Kruger, or at least don’t affect scenes over Kruger too much. By my calculations (in 2018), Landsat 5 passed over Kruger at around 9 am in the morning, every two weeks or so. I might be mistaken.</p>
+<p>The LANDSAT 5 surface reflectance thermal band (Band 6) is available from Google Earth Engine, and while USGS is unclear what the citation should read, this seems okay</p>
+<p>U.S. Geological Survey, 2015, Landsat surface reflectance data (ver. 1.1, March 27, 2019): U.S. Geological Survey Fact Sheet 2015-3034, 1 p., <a href="https://doi.org/10.3133/fs20153034" class="uri">https://doi.org/10.3133/fs20153034</a>.</p>
+<p>Other landscape data (waterholes and Kruger boundary) were provided by Maria Thaker and Abi Vanak, originally from SANParks.</p>
+<p>I accessed the rivers from <a href="https://www.openstreetmap.org">OpenStreetMap</a>, and I show only the non-seasonal rivers (as determined by OSM contributors).</p>
+</div>
+</div>
+<div id="published-work" class="section level2">
+<h2><span class="header-section-number">1.3</span> Published work</h2>
+<p>This dataset was used in Thaker M, Gupte PR, Prins HHT, et al (2019) Fine-Scale Tracking of Ambient Temperature and Movement Reveals Shuttling Behavior of Elephants to Water. Front Ecol Evol 7:. doi: 10.3389/fevo.2019.00004</p>
+<p>Link to the paper: <a href="https://www.frontiersin.org/articles/10.3389/fevo.2019.00004/full">Thaker, Gupte, et al. (2019)</a></p>
+<hr />
+<ul>
+<li>Rob Slotow’s page at UKZN (and UKZN pages generally) appear to be down.</li>
+</ul>
 
+</div>
 </div>
             </section>
 
