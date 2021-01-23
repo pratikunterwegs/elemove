@@ -57,7 +57,7 @@ data_rest <- data[data$id %in% c("AM255", "AM99", "AM239", "AM308"), ]
 #' 
 ## -----------------------------------------------------------------------------
 # get kruger data
-kruger <- st_read("data/kruger_clip/")
+kruger <- st_read("data/kruger_clip/kruger_clip.shp")
 kruger <- st_transform(kruger, 32736)
 
 # get inversion
