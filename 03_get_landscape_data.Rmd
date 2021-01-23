@@ -72,7 +72,8 @@ Waterhole locations were provided by Abi Vanak and Maria Thaker, originally from
 
 ## Process LANDSAT data
 
-```{r}
+```{r eval=FALSE}
+# do not evaluate because raster is large and not on GH
 # read data
 temp <- raster("data/kruger_landsat5_temp.tif")
 
