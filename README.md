@@ -39,7 +39,8 @@ What isn't easy to replicate:
 1. Some layers of the data are not in a publicly citable repository or similar, and had to be acquired by asking personally. This includes the Kruger boundaries, and the locations of 
 waterholes.
 2. The primary collection of the tracking data itself cannot be replicated. These elephants were collared in 2007 -- 2009. Are they still around? Possibly. Could we entirely reproduce the study by finding, collaring, and following them again? Probably not. 
-3. The primary data _has_ to be taken with trust in the authors/researchers. The original dataset I received had issues! The geographic and UTM coordinates did not correspond for some individuals. They had to be cleaned. This is covered in the code for the original project: https://pratikunterwegs.github.io/elephantTempKruger/preliminary-data-preparation.html
+3. The primary data _has_ to be taken with trust in the authors/researchers. The original dataset I received had issues! The geographic and UTM coordinates did not correspond for some individuals. This needed to be fixed. This is covered in the code for the original project: https://pratikunterwegs.github.io/elephantTempKruger/preliminary-data-preparation.html
+It it this repaired (but not otherwise cleaned) data that was uploaded to Movebank.
 
 ## Data access
 
@@ -48,7 +49,7 @@ This dataset tracks 14 adult female elephants over some 2 years in Kruger Nation
 These projects were led by [Rob Slotow*](https://www.ucl.ac.uk/biosciences/people/professor-rob-slotow), [Maria Thaker](https://mariathaker.weebly.com/), and [Abi Vanak](https://www.atree.org/users/dr-abi-tamim-vanak). See the data access section for citation details.
 
 I worked on this data in 2017 -- 2018 while a research assistant with Maria Thaker and Abi Vanak at CES, IISc, and ATREE, in Bangalore, India.
-I also uploaded the data to Movebank in 2018, and together with Candace Vinciguerra from _Movebank_, published the dataset under the project leaders' names in the data repository. The data now forms part of the _Movebank_ homepage animation, which is very cool to see.
+I also uploaded the data to Movebank in 2018, and together with Candace Vinciguerra from Movebank, published the dataset under the project leaders' names in the data repository. The data now forms part of the _Movebank_ homepage animation, which is very cool to see.
 
 The tracking dataset collected for use in this work is available from Movebank: https://doi.org/10.5441/001/1.403h24q5 and can be cited as
 
