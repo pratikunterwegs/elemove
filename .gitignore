@@ -12,3 +12,6 @@ data/*
 !river_crop
 !waterholes
 !africa.gpkg
+
+# all tiffs
+*.tiff
