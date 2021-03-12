@@ -1,6 +1,6 @@
 ---
 output: html_document
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -417,23 +417,9 @@ fig_main <-
   )
 ```
 
-### Make options
+### Apply colour to the temperature layer
 
 ```{r}
-# op1 = fig_main +
-#   scale_fill_gradientn(
-#     colours = scico(20,
-#       palette = "romaO",
-#       direction = -1,
-#       begin = 0., end = 1
-#     )
-#   )
-#
-# op2 = fig_main +
-#   scale_fill_distiller(
-#     palette = "RdYlBu"
-#   )
-
 fig_main <- fig_main +
   scale_fill_gradientn(
     colours = scico(20,
@@ -443,7 +429,6 @@ fig_main <- fig_main +
     )
   )
 ```
-
 
 ### Save figure
 
