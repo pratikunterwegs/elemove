@@ -73,7 +73,7 @@ I chose a diverging palette to show heterogeneity in the thermal landscape, but 
 
 ## Reproducibility in R
 
-I adopted a relatively relaxed understanding of reproducibility: given the data, the code would be reproducible if it could produce the map I had entered for this contest. To do this, I set up a continuous integeration/deployment pipeline using [Github Actions (GHA)](https://github.com/features/actions).
+I adopted a relatively relaxed understanding of reproducibility: given the data, the code would be reproducible if it could produce the map I had entered for this contest. To do this, I set up a continuous integration pipeline using [Github Actions (GHA)](https://github.com/features/actions).
 
 Using the [`usethis` package, I created a `DESCRIPTION` file](https://www.rostrum.blog/2020/08/09/ghactions-pkgs/), which is usually reserved for packages. This file tricks GHA into reading its contents, especially the dependencies, i.e., the R packages required by the project.
 
