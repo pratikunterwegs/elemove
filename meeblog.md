@@ -104,6 +104,6 @@ In ten years, code in R or another language may no longer be reproducible due to
 
 Finally, entire services might become unavailable; for example, the raster processing using Google Earth Engine is dependent on Google maintaining this service.
 
-Researchers then, should be pragmatic about reproducibility. Who is it for --- the researcher themselves, the reviewers of their manuscript, their students, their funders? 
+Researchers then, should be pragmatic about reproducibility. Who is it for --- the researchers themselves, the reviewers of their manuscript, their students, their funders? 
 
 To whom is this effort owed, and by whom, and how can the additional work required be prevented from becoming a gatekeeping mechanism [(1)](https://www.wired.com/2017/06/diversity-open-source-even-worse-tech-overall/), [(2)](https://www.pnas.org/content/117/39/24154)? These are issues that the ecology and evolution community will have to address.
