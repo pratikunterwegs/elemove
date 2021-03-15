@@ -1,5 +1,5 @@
 
-# Mapping Animal Movement: Art and Reproducibility
+# Mapping Animal Movement in `R`: The Science and the Art
 
 ## Introduction
 
