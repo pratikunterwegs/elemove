@@ -3,15 +3,15 @@
 
 ## Introduction
 
-In December 2020 I was pointed to the BES Mapping Animal Movements Contest, and the "R Map" category stood out to me.
-I decided to enter a map made showing the movement of 14 savanna elephants _Loxodonta africana_ tagged in Kruger National Park, South Africa.
+In December 2020 I was pointed to the [BES Mapping Animal Movements Contest](https://besmovesig.wordpress.com/movemapcompetition-2/), and the ["R Map" category](https://besmovesig.wordpress.com/movemapcompetition-2/rmap-category/) stood out to me.
+I entered a map made showing the movement of 14 savanna elephants _Loxodonta africana_ tagged in Kruger National Park, South Africa.
 
 The map highlights the path of the female elephant _AM253_ (the tag number). Some of the thirteen other elephants are also shown to give a sense of how densely Kruger is criss-crossed by elephant herds.
 The background shows the average temperature sensed by the LANDSAT-5 satellite over the two year period of this study.
 
-This data was part of the postdocs of [Maria Thaker](https://mariathaker.weebly.com/) and [Abi Vanak](https://www.atree.org/users/dr-abi-tamim-vanak), for whom I worked between my masters and my PhD. We wrote a [paper about how Kruger elephants move in response to temperature](https://www.frontiersin.org/articles/10.3389/fevo.2019.00004/full).
+This data was part of the postdocs of [Maria Thaker](https://mariathaker.weebly.com/) and [Abi Vanak](https://www.atree.org/users/dr-abi-tamim-vanak), for whom I worked between my master's and my PhD. We wrote a [paper about how Kruger elephants move in response to temperature](https://www.frontiersin.org/articles/10.3389/fevo.2019.00004/full).
 
-The source code and the figures can be found here: https://github.com/pratikunterwegs/elemove
+The source code and the map I made can be found here: https://github.com/pratikunterwegs/elemove
 
 ## Mapping as Exploratory Data Analysis
 
