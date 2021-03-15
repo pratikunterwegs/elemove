@@ -40,7 +40,7 @@ Interestingly, some of these approaches are very much in line with the ['grammar
 
 ## Mapping in R
 
-### Getting temperature data aka Flirting with Python
+### Getting Temperature Data _or_ A Detour with Python
 
 I used LANDSAT-5 for the temperature layer because it was the appropriate satellite for the time period (2007), and had a decent spatial resolution (30 metres). I used [Google Earth Engine (GEE)](https://earthengine.google.com/) to acquire this data. The heavy computation happens on the GEE servers, significantly increasing speed. By collecting these data for use at one point, GEE also improves data accessibility.
 
@@ -48,7 +48,7 @@ I used Python to get the LANDSAT-5 data from Google Earth Engine, using the `ee`
 
 I found Qiusheng Wu's [`geemap` package](https://github.com/giswqs/geemap) a great tool for visualisation of the data I was working with, and the associated tutorials a very good resource for help with `ee` generally.
 
-### Getting elephants and boundaries
+### Getting Elephants and Other Landscape Features
 
 In 2019, we published the data on the [Movebank data repository](https://www.movebank.org/cms/movebank-main) (It now forms part of the animation on the starting page).
 Getting the data was thus very easy using the `move` package, which I then saved as a geopackage.
@@ -56,7 +56,7 @@ Getting the data was thus very easy using the `move` package, which I then saved
 I acquried the river course data using the [`osmdata` package](https://docs.ropensci.org/osmdata/), which queries and retrieves data from the OpenStreetMap database. The boundaries of Africa and South Africa come from the [`rnaturalearth` package](https://docs.ropensci.org/rnaturalearth/).
 The Kruger boundary and the locations of waterholes originally come from the South African National Park service.
 
-### Choosing Tools
+### Choosing Mapping Tools
 
 R's great advantage over other languages is visualisaton, specifically the popular `ggplot` package. `ggplot`'s emergence as a mainstay of spatial visualisation is due to its `geom_sf` function, which can handle `sf` spatial objects.
 
@@ -66,7 +66,7 @@ Plotting rasters is not straightforward in `ggplot`. There are two main options:
 
 Here, I chose the second approach because I'm an infrequent `stars` user; since making the map I've tried `geom_stars` which works just as well, and is very convenient.
 
-### Choosing Colours
+### Choosing Map Colours
 
 I coloured the temperature raster using the [`scico` package's](https://github.com/thomasp85/scico) 'VikO' palette. I tried out a number of palettes from the `scico`, `pals` (providing the [Kovesi palettes](https://peterkovesi.com/projects/colourmaps/)), `RColorBrewer`, and `colorspace` packages.
 I chose a diverging palette to show heterogeneity in the thermal landscape, but this approach is not to be recommended for material that will be printed in grayscale.
