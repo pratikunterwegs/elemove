@@ -36,7 +36,7 @@ As with many other areas of science (other than primary data collection, please!
 Growing up in early 2000s India, I read hard copies of _National Geographic Magazine_, which has long had fantastic graphics. [_Where the Animals Go_](http://wheretheanimalsgo.com/) was a source of inspiration as well.
 
 I picked up other tips and tricks from knowing something of art generally: build up an image in layers, use colours that don't clash, highlight the phenomenon of interest.
-Interestingly, some of these approaches are very much in line with the ['grammar of graphics' approach of ggplot`](https://vita.had.co.nz/papers/layered-grammar.html), which I used to make this map.
+Interestingly, some of these approaches are very much in line with the ['grammar of graphics' approach of `ggplot`](https://vita.had.co.nz/papers/layered-grammar.html), which I used to make this map.
 
 ## Mapping in R
 
