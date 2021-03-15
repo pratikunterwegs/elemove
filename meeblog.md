@@ -94,7 +94,7 @@ GHA runs the pipeline on Linux, and Windows containers (Mac OS-x is also support
 
 ## The Limits of Reproducibility
 
-Reproducibility inevitably breaks down at certain scales.
+Reproducibility inevitably breaks down at certain scales in an ecological study.
 For instance, it would impossible to reproduce the primary data collection of the study, such as which elephants were captured and fitted with transmitters.
 These data are taken on faith from the original researchers, highlighting the role of trust in the scientific community.
 
