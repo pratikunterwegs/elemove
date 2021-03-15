@@ -102,7 +102,7 @@ Code too is not exempt from reproducibility limits. For instance, restoring the 
 
 In ten years, code in R or another language may no longer be reproducible due to software and hardware changes, as many researchers found in the [10-year reproducibility challenge](https://www.nature.com/articles/d41586-020-02462-7). 
 
-Finally, entire services might become unavailable; for example, the raster processing using Google Earth Engine, is dependent on Google maintaining this service.
+Finally, entire services might become unavailable; for example, the raster processing using Google Earth Engine is dependent on Google maintaining this service.
 
 Researchers then, should be pragmatic about reproducibility. Who is it for --- the researcher themselves, the reviewers of their manuscript, their students, their funders? 
 
