@@ -87,7 +87,7 @@ GHA runs this pipeline and reports whether the code ran successfully, and if not
 
 GHA runs the pipeline on Linux, and Windows containers (Mac OS-x is also supported). This means that though I use Linux, I'm pretty sure that this code works for Windows users.
 
- <figure>
+<figure>
   <img src="figures/fig_GHA_screenshot.png" width="533" height="300">
   <figcaption>Github Actions is a 'freemium' service that automatically checks whether the code pipeline I've put in place is sufficient to recreate the map.</figcaption>
 </figure> 
