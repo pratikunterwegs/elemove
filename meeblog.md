@@ -24,10 +24,13 @@ For instance, this map shows 'jumps': long, linear segments between points, whic
 For instance, the 'looping' behaviour of AM253 to water sources is the focus of this map.
 Seeing this looping behaviour allowed us to focus our study on elephant movements between visits to water sources.
 
- <figure>
+![](figures/fig_map_crop_jumps.png)
+
+_Mapping the data and seeing the 'loops' led us to focus on visits to water sources, an interesting biological phenomenon. The long, straight lines instead indicate a non-biological phenomenon, likely missing data between two time periods._
+<!-- <figure>
   <img src="figures/fig_map_crop_jumps.png" width="533" height="300">
   <figcaption>Mapping the data and seeing the 'loops' led us to focus on visits to water sources, an interesting biological phenomenon. The long, straight lines instead indicate a non-biological phenomenon, likely missing data between two time periods.</figcaption>
-</figure> 
+</figure>  -->
 
 ## Mapping as Art
 
@@ -87,10 +90,14 @@ GHA runs this pipeline and reports whether the code ran successfully, and if not
 
 GHA runs the pipeline on Linux, and Windows containers (Mac OS-x is also supported). This means that though I use Linux, I'm pretty sure that this code works for Windows users.
 
-<figure>
+![](figures/fig_GHA_screenshot.png)
+
+_Github Actions is a 'freemium' service that automatically checks whether the code pipeline I've put in place is sufficient to recreate the map._
+
+<!-- <figure>
   <img src="figures/fig_GHA_screenshot.png" width="533" height="300">
   <figcaption>Github Actions is a 'freemium' service that automatically checks whether the code pipeline I've put in place is sufficient to recreate the map.</figcaption>
-</figure> 
+</figure>  -->
 
 ## The Limits of Reproducibility
 
